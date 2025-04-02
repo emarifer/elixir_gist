@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:alpine
+    container_name: bs_db_local
+    ports:
+      - 5432:5432
+    volumes:
+      - ../app_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=backend_stuff
+      - POSTGRES_PASSWORD=blork_erlang
+
+# docker compose up -d
+# docker container start bs_db_local
+# docker container stop bs_db_local
+# docker exec -it bs_db_local psql -U backend_stuff
+# (pass: blork_erlang)
+
+# Listing databases in PostgreSQL: \l or \l+
+# Connect to the "elixir_gist_dev" database as user "backend_stuff":
+# \c elixir_gist_dev
+# [or directly by typing in the terminal:
+# docker exec -it bs_db_local psql -U backend_stuff elixir_gist_dev ]
+# [https://stackoverflow.com/questions/10335561/use-database-name-command-in-postgresql]
+# Showing tables from PostgreSQL: \dt
+# PostgreSQL DESCRIBE TABLE using psql: \d table_name (\d users)
+# Listing table contents: select * from users;
+# SQL Delete Records within a specific Range. VER:
+# delete from users where id between 7 and 15;
+# https://stackoverflow.com/questions/8225036/sql-delete-records-within-a-specific-range
+# delete from account where id between 31 and 33;
+# Exit the database: \q
