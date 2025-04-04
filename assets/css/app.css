@@ -48,16 +48,6 @@ form input[type="text"]:focus {
     @apply focus:outline-none focus:border-egLavender focus:ring-0
 }
 
-#create-gist-txt {
-    @apply bg-egDark-dark font-brand font-regular text-white text-xs border border-white h-[240px] resize-none w-full rounded-t-none rounded-b-md mt-0 !important;
-    border-top: none;
-}
-
-
-#create-gist-txt:focus {
-    @apply focus:outline-none focus:border-white focus:ring-0 !important
-}
-
 .create-button {
     @apply bg-egPurple border border-white font-brand font-regular text-black text-base
 }
