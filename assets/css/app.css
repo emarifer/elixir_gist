@@ -19,7 +19,7 @@
 
 .eg-gradient {
     background-image: linear-gradient(to bottom, #631A61, #551653, #340E33, #010101);
-    height: 200px;
+    height: 190px;
 }
 
 .dropdown-menu-arrow::before {
@@ -46,6 +46,17 @@ form input[type="text"] {
 
 form input[type="text"]:focus {
     @apply focus:outline-none focus:border-egLavender focus:ring-0
+}
+
+.scroller {
+    scrollbar-gutter: stable;
+    scrollbar-color: transparent transparent;
+    scrollbar-width: thin;
+    transition: scrollbar-color 2s ease-in-out;
+}
+
+.scroller:hover {
+    scrollbar-color: #3C3B3B transparent;
 }
 
 .create-button {

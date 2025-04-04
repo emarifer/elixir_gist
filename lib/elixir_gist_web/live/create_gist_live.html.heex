@@ -23,15 +23,28 @@
           />
         </div>
       </div>
-      <.input
-        type="textarea"
-        field={@form[:markup_text]}
-        class="bg-egDark-dark font-brand font-regular text-white text-xs border border-white border-t-0 h-[240px] resize-none w-full rounded-t-none rounded-b-md mt-0 focus:outline-none focus:border-white focus:ring-0"
-        placeholder="Insert code…"
-        spellcheck="false"
-        autocomplete="off"
-        phx-debounce="blur"
-      />
+      <div id="gist-wrapper" class="flex w-full" phx-update="ignore">
+        <%!-- https://hexdocs.pm/phoenix_live_view/bindings.html#dom-patching --%>
+        <textarea
+          id="line-numbers"
+          class="border border-white border-t-0 border-r-0 rounded-bl-md font-brand font-regular text-xs text-egDark-light bg-egDark-dark h-[250px] w-[54px] text-right overflow-hidden resize-none focus:outline-none focus:border-white focus:ring-0"
+          readonly
+        >{"1\n"}
+        </textarea>
+        <div class="flex-grow">
+          <.input
+            id="gist-textarea"
+            phx-hook="UpdateLineNumbers"
+            type="textarea"
+            field={@form[:markup_text]}
+            class="bg-egDark-dark font-brand font-regular text-white text-xs border border-white border-t-0 border-l-0 h-[250px] resize-none w-full rounded-t-none rounded-br-md mt-0 focus:outline-none focus:border-white focus:ring-0 flex-grow scroller"
+            placeholder="Insert code…"
+            spellcheck="false"
+            autocomplete="off"
+            phx-debounce="blur"
+          />
+        </div>
+      </div>
     </div>
     <div class="flex justify-end">
       <.button class="create-button" phx-disable-with="Creating…">
