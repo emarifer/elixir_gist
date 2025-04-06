@@ -38,6 +38,20 @@ Hooks.UpdateLineNumbers = {
       lineNumberText.scrollTop = this.el.scrollTop;
     })
 
+    this.el.addEventListener("keydown", (e) => {
+      if (e.key == "Tab") {
+        e.preventDefault();
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/selectionStart
+        const start = this.el.selectionStart;
+        const end = this.el.selectionEnd;
+        // we add a tab character at the cursor position.
+        this.el.value = this.el.value.substring(0, start) + "\t" + this.el.value.substring(end)
+        // we update the cursor position by one character, that is,
+        // we place the cursor to the right of the tab character we just added.
+        this.el.selectionStart = this.el.selectionEnd = start + 1;
+      }
+    })
+
     // See:
     // https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#push_event/3
     this.handleEvent("clear-textareas", () => {
