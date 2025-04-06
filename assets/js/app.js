@@ -26,16 +26,23 @@ let Hooks = {};
 
 Hooks.UpdateLineNumbers = {
   mounted() {
+    const lineNumberText = document.querySelector("#line-numbers");
+
     this.el.addEventListener("input", () => {
       this.updateLineNumbers()
     })
 
     this.el.addEventListener("scroll", () => {
-      const lineNumberText = document.querySelector("#line-numbers");
-
       // This way, the two text areas will run in parallel
       // when the text area in which we write scrolls automatically.
       lineNumberText.scrollTop = this.el.scrollTop;
+    })
+
+    // See:
+    // https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#push_event/3
+    this.handleEvent("clear-textareas", () => {
+      this.el.value = "";
+      lineNumberText.value = "1\n";
     })
 
     // We also call the update function when mounting our input.
