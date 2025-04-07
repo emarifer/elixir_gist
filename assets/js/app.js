@@ -77,6 +77,12 @@ Hooks.UpdateLineNumbers = {
   }
 };
 
+Hooks.CurrentYear = {
+  mounted() {
+    this.el.textContent = new Date().getFullYear();
+  }
+};
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,

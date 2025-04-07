@@ -106,12 +106,12 @@
   {@inner_content}
 </main>
 
-<footer class="w-full flex justify-center text-white px-16 py-10 font-brand font-regular text-xs">
+<footer class="w-full flex justify-center text-white px-16 py-10 font-brand font-regular text-xs lg:px-40">
   <div class="w-full px-10">
     <div class="border-t-[1px] border-white w-full"></div>
     <div class="flex items-center space-x-2 py-6">
       <img src="/images/emarifer-logo.jpg" alt="Author Logo" class="round-image-padding w-14" />
-      <p>© {Date.utc_today().year} emarifer</p>
+      <p>© <span id="current-year" phx-hook="CurrentYear"></span> emarifer</p>
       <div class="text-egLavender-dark px-4 space-x-2">
         <a href={~p"/"} class="hover:underline">Terms</a>
         <a href={~p"/"} class="hover:underline">Privacy</a>
@@ -127,5 +127,8 @@
     </div>
   </div>
 </footer>
+
+<%!-- Dynamic year from backend (Elixir): --%>
+<%!-- <p>© {Date.utc_today().year} emarifer</p> --%>
 
 <%!-- https://dev.to/nehalahmadkhan/how-to-make-footer-stick-to-bottom-of-web-page-3i14 --%>
