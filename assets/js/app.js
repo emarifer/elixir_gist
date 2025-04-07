@@ -27,6 +27,8 @@ let Hooks = {};
 Hooks.UpdateLineNumbers = {
   mounted() {
     const lineNumberText = document.querySelector("#line-numbers");
+    const createButton = document.querySelector(".create-button");
+    let keyPressed = {};
 
     this.el.addEventListener("input", () => {
       this.updateLineNumbers()
@@ -39,6 +41,13 @@ Hooks.UpdateLineNumbers = {
     })
 
     this.el.addEventListener("keydown", (e) => {
+      // https://stackoverflow.com/questions/20962033/how-can-i-catch-2-key-presses-at-once
+      keyPressed[e.key] = true;
+      if (keyPressed["Control"] && keyPressed["Shift"] && keyPressed["F"]) {
+        keyPressed = {};
+        createButton.focus();
+      }
+
       if (e.key == "Tab") {
         e.preventDefault();
         // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/selectionStart

@@ -48,7 +48,9 @@ form input[type="text"]:focus {
     @apply focus:outline-none focus:border-egLavender focus:ring-0
 }
 
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-padding-bottom */
 .scroller {
+    scroll-padding-bottom: 32px;
     scrollbar-gutter: stable;
     scrollbar-color: transparent transparent;
     scrollbar-width: thin;
