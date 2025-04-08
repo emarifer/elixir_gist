@@ -33,13 +33,30 @@
       {@gist.name}
     </div>
     <div>
-      <button class="px-1" type="button" phx-click={}>
+      <button
+        title="Delete gist"
+        class="px-1 hover:brightness-75 active:scale-110"
+        type="button"
+        phx-click={}
+      >
         <img src="/images/delete.svg" alt="Delete Button" />
       </button>
-      <button class="px-1" type="button" phx-click={}>
+      <button
+        title="Edit gist"
+        class="px-1 hover:brightness-75 active:scale-110"
+        type="button"
+        phx-click={}
+      >
         <img src="/images/edit.svg" alt="Edit Button" />
       </button>
-      <button class="px-1" type="button" phx-click={}>
+      <button
+        id="copy-btn"
+        title="Copy gist to clipboard"
+        class="px-1 hover:brightness-75 active:scale-110"
+        type="button"
+        phx-hook="CopyToClipboard"
+        data-clipboard-gist={@gist.markup_text}
+      >
         <img src="/images/copy.svg" alt="Copy Button" />
       </button>
     </div>
