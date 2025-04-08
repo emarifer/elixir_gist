@@ -1,3 +1,65 @@
-<div id="highlight" class="bg-white" phx-hook="Highlight" data-name={@gist.name}>
-  <pre><code class="language-elixir">{@gist.markup_text}</code></pre>
+<div class="eg-gradient flex flex-col items-center justify-center p-4">
+  <div class="flex justify-between w-full mb-10 px-4">
+    <div class="flex items-center ml-10">
+      <img
+        src="/images/user-image.svg"
+        alt="Profile Image"
+        class="round-image-padding w-8 h-8 mb-6"
+      />
+      <div class="flex flex-col ml-4">
+        <div class="font-bold text-base text-egLavender-dark">
+          {@current_user.email}<span class="text-white">/</span>{@gist.name}
+        </div>
+        <div class="text-lg text-white font-bold">{@gist.updated_at}</div>
+        <p class="text-left text-sm text-white font-brand">
+          {@gist.description}
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center mr-10">
+      <button class="flex items-center bg-egPurple hover:bg-egPurple-dark border-white border-[1px] text-white h-8 font-bold py-2 px-2 rounded-l-md">
+        <img src="/images/BookmarkOutline.svg" alt="Save Button" /> Save
+      </button>
+      <div class="flex items-center bg-transparent text-white font-brand h-8 rounded-r-md border-white border-[1px] px-3">
+        0
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="justify-center px-28 w-full mb-10 mt-[6px] lg:px-52">
+  <div class="flex p-2 items-center justify-between bg-egDark rounded-t-md border">
+    <div class="w-[300px] pl-2 font-brand font-bold text-base text-egLavender-dark">
+      {@gist.name}
+    </div>
+    <div>
+      <button class="px-1" type="button" phx-click={}>
+        <img src="/images/delete.svg" alt="Delete Button" />
+      </button>
+      <button class="px-1" type="button" phx-click={}>
+        <img src="/images/edit.svg" alt="Edit Button" />
+      </button>
+      <button class="px-1" type="button" phx-click={}>
+        <img src="/images/copy.svg" alt="Copy Button" />
+      </button>
+    </div>
+  </div>
+
+  <div id="gist-wrapper" class="flex w-full">
+    <textarea
+      id="line-numbers"
+      class="border border-white font-brand py-[28px] text-xs text-egDark-light bg-egSyntax h-auto w-[54px] text-right overflow-hidden resize-none rounded-bl-md border-r-0 border-t-0 focus:outline-none focus:border-white focus:ring-0"
+      readonly
+    >
+    {"1\n"}
+    </textarea>
+    <div
+      id="highlight"
+      class="bg-egSyntax text-xs border border-white border-t-0 border-l-0 h-auto w-full rounded-br-md overflow-clip"
+      phx-hook="Highlight"
+      data-name={@gist.name}
+    >
+      <pre><code class="language-elixir">{@gist.markup_text}</code></pre>
+    </div>
+  </div>
 </div>
