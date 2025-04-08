@@ -22,6 +22,16 @@ import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+function updateLineNumbers(value) {
+  const lineNumberText = document.querySelector("#line-numbers");
+  if (!lineNumberText) return;
+
+  const lines = value.split("\n");
+  const numbers = lines.map((_, index) => index + 1).join("\n") + "\n";
+
+  lineNumberText.value = numbers;
+};
+
 let Hooks = {};
 
 Hooks.Highlight = {
@@ -32,7 +42,9 @@ Hooks.Highlight = {
     if (name && codeBlock) {
       codeBlock.className = codeBlock.className.replace(/language-\S+/g, "");
       codeBlock.classList.add(`language-${this.getSyntaxType(name)}`);
-      hljs.highlightElement(codeBlock);
+      trimmed = this.trimCodeBlock(codeBlock);
+      hljs.highlightElement(trimmed);
+      updateLineNumbers(trimmed.textContent);
     }
   },
 
@@ -53,6 +65,17 @@ Hooks.Highlight = {
       default:
         return "elixir";
     }
+  },
+
+  trimCodeBlock(codeBlock) {
+    const lines = codeBlock.textContent.split("\n");
+    if (lines.lenght > 2) {
+      lines.shift();
+      lines.pop();
+    }
+    codeBlock.textContent = lines.join("\n");
+
+    return codeBlock;
   }
 };
 
@@ -63,7 +86,7 @@ Hooks.UpdateLineNumbers = {
     let keyPressed = {};
 
     this.el.addEventListener("input", () => {
-      this.updateLineNumbers()
+      updateLineNumbers(this.el.value)
     })
 
     this.el.addEventListener("scroll", () => {
@@ -101,20 +124,7 @@ Hooks.UpdateLineNumbers = {
     })
 
     // We also call the update function when mounting our input.
-    this.updateLineNumbers()
-  },
-
-  updateLineNumbers() {
-    const lineNumberText = document.querySelector("#line-numbers");
-    if (!lineNumberText) return;
-
-    // `this` is the element to which the hook is attached,
-    // in this case, the text area attached to `#line-numbers`
-    // in which we put our code.
-    const lines = this.el.value.split("\n");
-    const numbers = lines.map((_, index) => index + 1).join("\n") + "\n";
-
-    lineNumberText.value = numbers;
+    updateLineNumbers(this.el.value)
   }
 };
 
