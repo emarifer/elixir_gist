@@ -76,15 +76,16 @@ defmodule ElixirGist.Gists do
   end
 
   @doc """
-  Deletes a gist.
+  Delete a gist by verifying that the gist belongs to
+  the user requesting the deletion action.
 
   ## Examples
 
-      iex> delete_gist(gist)
+      iex> delete_gist(user, gist_id)
       {:ok, %Gist{}}
 
       iex> delete_gist(gist)
-      {:error, %Ecto.Changeset{}}
+      {:error, :unauthorized}
 
   """
   def delete_gist(%User{} = user, gist_id) do
