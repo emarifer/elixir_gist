@@ -148,6 +148,13 @@ Hooks.CurrentYear = {
   }
 };
 
+Hooks.DateFormat = {
+  mounted() {
+    const time = this.el.getAttribute("data-time");
+    this.el.setAttribute("title", new Date(time));
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,

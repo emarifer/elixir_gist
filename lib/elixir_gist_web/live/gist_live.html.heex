@@ -10,7 +10,14 @@
         <div class="font-bold text-base text-egLavender-dark">
           {@current_user.email}<span class="text-white">/</span>{@gist.name}
         </div>
-        <div class="text-lg text-white font-bold">{@gist.updated_at}</div>
+        <div
+          id="date-format"
+          phx-hook="DateFormat"
+          data-time={@gist.updated_at}
+          class="text-lg text-white font-bold"
+        >
+          {@gist.relative}
+        </div>
         <p class="text-left text-sm text-white font-brand">
           {@gist.description}
         </p>
