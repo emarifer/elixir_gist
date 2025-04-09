@@ -33,22 +33,25 @@
       {@gist.name}
     </div>
     <div>
-      <button
-        title="Delete gist"
-        class="px-1 hover:brightness-75 active:scale-110"
-        type="button"
-        phx-click={}
-      >
-        <img src="/images/delete.svg" alt="Delete Button" />
-      </button>
-      <button
-        title="Edit gist"
-        class="px-1 hover:brightness-75 active:scale-110"
-        type="button"
-        phx-click={}
-      >
-        <img src="/images/edit.svg" alt="Edit Button" />
-      </button>
+      <%= if @current_user.id == @gist.user_id do %>
+        <button
+          title="Delete gist"
+          class="px-1 hover:brightness-75 active:scale-110"
+          type="button"
+          phx-click="delete"
+          phx-value-id={@gist.id}
+        >
+          <img src="/images/delete.svg" alt="Delete Button" />
+        </button>
+        <button
+          title="Edit gist"
+          class="px-1 hover:brightness-75 active:scale-110"
+          type="button"
+          phx-click={}
+        >
+          <img src="/images/edit.svg" alt="Edit Button" />
+        </button>
+      <% end %>
       <button
         id="copy-btn"
         title="Copy gist to clipboard"
