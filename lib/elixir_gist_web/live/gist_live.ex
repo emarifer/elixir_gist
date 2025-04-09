@@ -15,9 +15,9 @@ defmodule ElixirGistWeb.GistLive do
         socket = put_flash(socket, :info, "Gist Successfully Deleted")
         {:noreply, redirect(socket, to: ~p"/create")}
 
-      {:error, message} ->
+      {:error, message, gist} ->
         socket = put_flash(socket, :error, message)
-        {:noreply, socket}
+        {:noreply, redirect(socket, to: ~p"/gist?#{[id: gist]}")}
     end
   end
 end

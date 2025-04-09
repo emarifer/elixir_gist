@@ -84,8 +84,8 @@ defmodule ElixirGist.Gists do
       iex> delete_gist(user, gist_id)
       {:ok, %Gist{}}
 
-      iex> delete_gist(gist)
-      {:error, :unauthorized}
+      iex> delete_gist(user, gist_id)
+      {:error, :unauthorized, %Gist{}}
 
   """
   def delete_gist(%User{} = user, gist_id) do
@@ -96,7 +96,7 @@ defmodule ElixirGist.Gists do
 
       {:ok, gist}
     else
-      {:error, :unauthorized}
+      {:error, :unauthorized, gist}
     end
   end
 
