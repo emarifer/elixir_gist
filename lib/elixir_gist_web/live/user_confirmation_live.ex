@@ -5,27 +5,44 @@ defmodule ElixirGistWeb.UserConfirmationLive do
 
   def render(%{live_action: :edit} = assigns) do
     ~H"""
+    <div class="eg-gradient flex flex-col items-center justify-center">
+      <h1 class="font-brand font-bold text-3xl text-white py-2">
+        Confirm Account
+      </h1>
+    </div>
     <div class="mx-auto max-w-sm">
-      <.header class="text-center">Confirm Account</.header>
-
-      <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
+      <.simple_form
+        for={@form}
+        id="confirmation_form"
+        phx-submit="confirm_account"
+        class="bg-transparent"
+      >
         <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
-        <:actions>
-          <.button phx-disable-with="Confirming..." class="w-full">Confirm my account</.button>
-        </:actions>
+        <.button phx-disable-with="Confirming…" class="create-button w-full">
+          Confirm my account
+        </.button>
       </.simple_form>
 
-      <p class="text-center mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
+      <p class="text-center text-lg font-brand font-bold text-white mt-4">
+        <.link navigate={~p"/users/register"} class="text-egLavender-dark hover:underline">
+          Register
+        </.link>
+        |
+        <.link navigate={~p"/users/log_in"} class="text-egLavender-dark hover:underline">
+          Log in
+        </.link>
       </p>
     </div>
     """
   end
 
+  # Confirm Account
+
   def mount(%{"token" => token}, _session, socket) do
     form = to_form(%{"token" => token}, as: "user")
-    {:ok, assign(socket, form: form), temporary_assigns: [form: nil]}
+
+    {:ok, assign(socket, form: form, page_title: "Confirm account"),
+     temporary_assigns: [form: nil]}
   end
 
   # Do not log in the user after confirmation to avoid a

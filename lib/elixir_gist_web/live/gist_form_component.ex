@@ -117,3 +117,6 @@ end
 # https://elixirforum.com/t/how-to-achieve-phx-target-myself-in-heex/58606
 # https://elixirforum.com/t/statful-component-must-have-a-static-html-in-root-issue/43643
 # https://www.youtube.com/live/qyd88knzsHk?si=9juF39vO0q4g2SHn&t=512
+
+# ADDITIONAL REFERENCES:
+# https://adopt-liveview.lubien.dev/guides/live-component/en

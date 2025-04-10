@@ -5,31 +5,45 @@ defmodule ElixirGistWeb.UserConfirmationInstructionsLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
+    <div class="eg-gradient flex flex-col items-center justify-center">
+      <h1 class="font-brand font-bold text-3xl text-white py-2">
         No confirmation instructions received?
-        <:subtitle>We'll send a new confirmation link to your inbox</:subtitle>
-      </.header>
+      </h1>
+      <h3 class="font-brand font-bold text-lg text-white">
+        We'll send a new confirmation link to your inbox
+      </h3>
+    </div>
 
-      <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
+    <div class="mx-auto max-w-sm">
+      <.simple_form
+        for={@form}
+        id="resend_confirmation_form"
+        phx-submit="send_instructions"
+        class="bg-transparent"
+      >
         <.input field={@form[:email]} type="email" placeholder="Email" required />
-        <:actions>
-          <.button phx-disable-with="Sending..." class="w-full">
+        <div class="pt-6">
+          <.button phx-disable-with="Sending…" class="create-button w-full">
             Resend confirmation instructions
           </.button>
-        </:actions>
+        </div>
       </.simple_form>
 
-      <p class="text-center mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
+      <p class="text-center text-lg font-brand font-bold text-white mt-4">
+        <.link navigate={~p"/users/register"} class="text-egLavender-dark hover:underline">
+          Register
+        </.link>
+        |
+        <.link navigate={~p"/users/log_in"} class="text-egLavender-dark hover:underline">
+          Log in
+        </.link>
       </p>
     </div>
     """
   end
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, form: to_form(%{}, as: "user"))}
+    {:ok, assign(socket, form: to_form(%{}, as: "user"), page_title: "Confirmation instructions")}
   end
 
   def handle_event("send_instructions", %{"user" => %{"email" => email}}, socket) do

@@ -5,41 +5,52 @@ defmodule ElixirGistWeb.UserResetPasswordLive do
 
   def render(assigns) do
     ~H"""
+    <div class="eg-gradient flex flex-col items-center justify-center">
+      <h1 class="font-brand font-bold text-3xl text-white py-2">
+        Reset Password
+      </h1>
+    </div>
     <div class="mx-auto max-w-sm">
-      <.header class="text-center">Reset Password</.header>
-
       <.simple_form
         for={@form}
         id="reset_password_form"
         phx-submit="reset_password"
         phx-change="validate"
+        class="bg-transparent"
       >
         <.error :if={@form.errors != []}>
           Oops, something went wrong! Please check the errors below.
         </.error>
 
-        <.input field={@form[:password]} type="password" label="New password" required />
+        <.input field={@form[:password]} type="password" placeholder="New password" required />
         <.input
           field={@form[:password_confirmation]}
           type="password"
-          label="Confirm new password"
+          placeholder="Confirm new password"
           required
         />
-        <:actions>
-          <.button phx-disable-with="Resetting..." class="w-full">Reset Password</.button>
-        </:actions>
+        <div class="pt-6">
+          <.button phx-disable-with="Resetting…" class="create-button w-full">
+            Reset Password
+          </.button>
+        </div>
       </.simple_form>
 
-      <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
+      <p class="text-center text-lg font-brand font-bold text-white mt-4">
+        <.link navigate={~p"/users/register"} class="text-egLavender-dark hover:underline">
+          Register
+        </.link>
+        |
+        <.link navigate={~p"/users/log_in"} class="text-egLavender-dark hover:underline">
+          Log in
+        </.link>
       </p>
     </div>
     """
   end
 
   def mount(params, _session, socket) do
-    socket = assign_user_and_token(socket, params)
+    socket = assign_user_and_token(socket |> assign(:page_title, "Reset password"), params)
 
     form_source =
       case socket.assigns do

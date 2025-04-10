@@ -6,18 +6,22 @@ defmodule ElixirGistWeb.UserRegistrationLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
+    <div class="eg-gradient flex flex-col items-center justify-center">
+      <h1 class="font-brand font-bold text-3xl text-white py-2">
         Register for an account
-        <:subtitle>
-          Already registered?
-          <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
-            Log in
-          </.link>
-          to your account now.
-        </:subtitle>
-      </.header>
-
+      </h1>
+      <h3 class="font-brand font-bold text-lg text-white">
+        Already registered?
+        <.link
+          navigate={~p"/users/log_in"}
+          class="font-semibold text-brand hover:underline text-egLavender-dark"
+        >
+          Sign in
+        </.link>
+        to your account now.
+      </h3>
+    </div>
+    <div class="mx-auto max-w-sm">
       <.simple_form
         for={@form}
         id="registration_form"
@@ -26,17 +30,20 @@ defmodule ElixirGistWeb.UserRegistrationLive do
         phx-trigger-action={@trigger_submit}
         action={~p"/users/log_in?_action=registered"}
         method="post"
+        class="bg-transparent"
       >
         <.error :if={@check_errors}>
           Oops, something went wrong! Please check the errors below.
         </.error>
 
-        <.input field={@form[:email]} type="email" label="Email" required />
-        <.input field={@form[:password]} type="password" label="Password" required />
+        <.input field={@form[:email]} type="email" placeholder="Email" required />
+        <.input field={@form[:password]} type="password" placeholder="Password" required />
 
-        <:actions>
-          <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
-        </:actions>
+        <div class="py-6">
+          <.button phx-disable-with="Creating account…" class="create-button w-full">
+            Create an account
+          </.button>
+        </div>
       </.simple_form>
     </div>
     """
@@ -47,7 +54,7 @@ defmodule ElixirGistWeb.UserRegistrationLive do
 
     socket =
       socket
-      |> assign(trigger_submit: false, check_errors: false)
+      |> assign(trigger_submit: false, check_errors: false, page_title: "Sign up")
       |> assign_form(changeset)
 
     {:ok, socket, temporary_assigns: [form: nil]}

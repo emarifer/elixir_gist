@@ -40,11 +40,11 @@
     @apply hover:text-egDark-light
 }
 
-form input[type="text"] {
+form input[type="text"], input[type="email"], input[type="password"] {
     @apply bg-egDark-dark font-brand font-regular text-white text-xs border border-white
 }
 
-form input[type="text"]:focus {
+form input[type="text"], input[type="email"], input[type="password"]:focus {
     @apply focus:outline-none focus:border-egLavender focus:ring-0
 }
 
