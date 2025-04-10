@@ -22,8 +22,9 @@ import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
-function updateLineNumbers(value) {
-  const lineNumberText = document.querySelector("#line-numbers");
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters
+function updateLineNumbers(value, element_id = "#line-numbers") {
+  const lineNumberText = document.querySelector(element_id);
   if (!lineNumberText) return;
 
   const lines = value.split("\n");
@@ -44,7 +45,7 @@ Hooks.Highlight = {
       codeBlock.classList.add(`language-${this.getSyntaxType(name)}`);
       trimmed = this.trimCodeBlock(codeBlock);
       hljs.highlightElement(trimmed);
-      updateLineNumbers(trimmed.textContent);
+      updateLineNumbers(trimmed.textContent, "#syntax-numbers");
     }
   },
 
@@ -127,6 +128,20 @@ Hooks.UpdateLineNumbers = {
     updateLineNumbers(this.el.value)
   }
 };
+
+Hooks.ToggleEdit = {
+  mounted() {
+    this.el.addEventListener("click", () => {
+      let edit = document.getElementById("edit-section");
+      let syntax = document.getElementById("syntax-section");
+
+      if (edit && syntax) {
+        edit.style.display = "block";
+        syntax.style.display = "none";
+      }
+    })
+  }
+}
 
 Hooks.CopyToClipboard = {
   mounted() {

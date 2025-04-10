@@ -14,7 +14,7 @@
           id="date-format"
           phx-hook="DateFormat"
           data-time={@gist.updated_at}
-          class="text-lg text-white font-bold"
+          class="text-lg text-white font-bold cursor-pointer"
         >
           {@gist.relative}
         </div>
@@ -34,58 +34,73 @@
   </div>
 </div>
 
-<div class="justify-center px-28 w-full mb-10 mt-[6px] lg:px-52">
-  <div class="flex p-2 items-center justify-between bg-egDark rounded-t-md border">
-    <div class="w-[300px] pl-2 font-brand font-bold text-base text-egLavender-dark">
-      {@gist.name}
-    </div>
-    <div>
-      <%= if @current_user.id == @gist.user_id do %>
-        <button
-          title="Delete gist"
-          class="px-1 hover:brightness-75 active:scale-110"
-          type="button"
-          phx-click="delete"
-          phx-value-id={@gist.id}
-        >
-          <img src="/images/delete.svg" alt="Delete Button" />
-        </button>
-        <button
-          title="Edit gist"
-          class="px-1 hover:brightness-75 active:scale-110"
-          type="button"
-          phx-click={}
-        >
-          <img src="/images/edit.svg" alt="Edit Button" />
-        </button>
-      <% end %>
-      <button
-        id="copy-btn"
-        title="Copy gist to clipboard"
-        class="px-1 hover:brightness-75 active:scale-110"
-        type="button"
-        phx-hook="CopyToClipboard"
-        data-clipboard-gist={@gist.markup_text}
-      >
-        <img src="/images/copy.svg" alt="Copy Button" />
-      </button>
-    </div>
-  </div>
+<div id="edit-section" style="display: none">
+  <.live_component
+    module={GistFormComponent}
+    id={@gist.id}
+    form={to_form(Gists.change_gist(@gist))}
+    current_user={@current_user}
+  />
+</div>
 
-  <div id="gist-wrapper" class="flex w-full">
-    <textarea
-      id="line-numbers"
-      class="border border-white font-brand py-2.5 text-xs text-egDark-light bg-egSyntax h-auto w-[54px] text-right overflow-hidden resize-none rounded-bl-md border-r-0 border-t-0 focus:outline-none focus:border-white focus:ring-0"
-      readonly
-    >
+<div id="syntax-section" style="display: block">
+  <div class="justify-center px-28 w-full mb-10 mt-[6px] lg:px-52">
+    <div class="flex p-2 items-center justify-between bg-egDark rounded-t-md border">
+      <div class="w-[300px] pl-2 font-brand font-bold text-base text-egLavender-dark">
+        {@gist.name}
+      </div>
+      <div>
+        <%= if @current_user.id == @gist.user_id do %>
+          <button
+            title="Delete gist"
+            class="px-1 hover:brightness-75 active:scale-110"
+            type="button"
+            phx-click="delete"
+            phx-value-id={@gist.id}
+          >
+            <img src="/images/delete.svg" alt="Delete Button" />
+          </button>
+          <button
+            id="edit-btn"
+            title="Edit gist"
+            class="px-1 hover:brightness-75 active:scale-110"
+            type="button"
+            phx-hook="ToggleEdit"
+          >
+            <img src="/images/edit.svg" alt="Edit Button" />
+          </button>
+        <% end %>
+        <button
+          id="copy-btn"
+          title="Copy gist to clipboard"
+          class="px-1 hover:brightness-75 active:scale-110"
+          type="button"
+          phx-hook="CopyToClipboard"
+          data-clipboard-gist={@gist.markup_text}
+        >
+          <img src="/images/copy.svg" alt="Copy Button" />
+        </button>
+      </div>
+    </div>
+
+    <%!-- See note below --%>
+    <div id="gist-wrapper" class="flex w-full">
+      <textarea
+        id="syntax-numbers"
+        class="border border-white font-brand py-2.5 text-xs text-egDark-light bg-egSyntax h-auto w-[54px] text-right overflow-hidden resize-none rounded-bl-md border-r-0 border-t-0 focus:outline-none focus:border-white focus:ring-0"
+        readonly
+      >
     </textarea>
-    <div
-      id="highlight"
-      class="bg-egSyntax text-xs border border-white border-t-0 border-l-0 h-auto w-full rounded-br-md overflow-clip"
-      phx-hook="Highlight"
-      data-name={@gist.name}
-    >
-      <pre><code class="language-elixir">{@gist.markup_text}</code></pre>
+      <div
+        id="highlight"
+        class="bg-egSyntax text-xs border border-white border-t-0 border-l-0 h-auto w-full rounded-br-md overflow-clip"
+        phx-hook="Highlight"
+        data-name={@gist.name}
+      >
+        <pre><code class="language-elixir">{@gist.markup_text}</code></pre>
+      </div>
     </div>
   </div>
 </div>
+
+<%!-- https://youtu.be/tPIlvh0dOlw?si=Ern9MlkRdxOpzXB_&t=1631 --%>

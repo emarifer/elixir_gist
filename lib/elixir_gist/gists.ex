@@ -62,17 +62,23 @@ defmodule ElixirGist.Gists do
 
   ## Examples
 
-      iex> update_gist(gist, %{field: new_value})
+      iex> update_gist(user, %{field: new_value})
       {:ok, %Gist{}}
 
       iex> update_gist(gist, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_gist(%Gist{} = gist, attrs) do
-    gist
-    |> Gist.changeset(attrs)
-    |> Repo.update()
+  def update_gist(%User{} = user, attrs) do
+    gist = Repo.get!(Gist, attrs["id"])
+
+    if user.id == gist.user_id do
+      gist
+      |> Gist.changeset(attrs)
+      |> Repo.update()
+    else
+      {:error, :unauthorized, gist}
+    end
   end
 
   @doc """
