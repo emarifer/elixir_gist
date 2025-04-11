@@ -1,6 +1,8 @@
 defmodule ElixirGistWeb.AllGistsLive do
   use ElixirGistWeb, :live_view
+
   alias ElixirGist.Gists
+  alias ElixirGistWeb.Utilities.DateFormat
 
   def mount(_params, _session, socket) do
     {:ok, socket}
@@ -20,11 +22,28 @@ defmodule ElixirGistWeb.AllGistsLive do
   # https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#c:render/1
   def gist(assigns) do
     ~H"""
-    <div class="bg-egDark rounded-lg text-left text-sm text-white flex-col w-fit mx-auto p-4 my-2">
-      <div>{@gist.user.email}/{@gist.name}</div>
-      <div>{@gist.updated_at}</div>
-      <div>{@gist.description}</div>
-      <div>{@gist.markup_text}</div>
+    <div class="justify-center px-28 w-full mb-20">
+      <div class="flex justify-between mb-4">
+        <div class="flex items-center">
+          <img
+            src="/images/user-image.svg"
+            alt="Profile Image"
+            class="round-image-padding w-8 h-8 mb-6"
+          />
+          <div class="flex flex-col ml-4">
+            <div class="font-bold text-base text-egLavender-dark">
+              {@gist.user.email}<span class="text-white"> / </span>{@gist.name}
+            </div>
+            <div class="font-bold text-lg text-white">
+              {DateFormat.get_relative_time(@gist.updated_at)}
+            </div>
+            <p class="text-sm text-white">
+              {@gist.description}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-white my-2">{@gist.markup_text}</div>
     </div>
     """
   end
