@@ -34,6 +34,8 @@
   </div>
 </div>
 
+<%!-- The ID we passed with `form={to_form(Gists.change_gist(@gist))}` is lost when we pass it to the form. See the solution here: --%>
+<%!-- https://youtu.be/-2Zd6Ql5Y1Y?si=CCXFn_txQtrOCtz_&t=246 --%>
 <div id="edit-section" style="display: none">
   <.live_component
     module={GistFormComponent}

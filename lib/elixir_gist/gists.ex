@@ -9,6 +9,8 @@ defmodule ElixirGist.Gists do
 
   alias ElixirGist.Gists.Gist
 
+  # https://elixirforum.com/t/how-to-preload-associations-in-ecto-and-then-access-fields-from-those-associations/13316/2
+  # https://hexdocs.pm/ecto/Ecto.Query.html#order_by/3
   @doc """
   Returns the list of gists.
 
@@ -19,7 +21,10 @@ defmodule ElixirGist.Gists do
 
   """
   def list_gists do
-    Repo.all(Gist)
+    Gist
+    |> order_by(desc: :updated_at)
+    |> Repo.all()
+    |> Repo.preload([:user])
   end
 
   @doc """
