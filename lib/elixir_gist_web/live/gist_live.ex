@@ -1,16 +1,14 @@
 defmodule ElixirGistWeb.GistLive do
   use ElixirGistWeb, :live_view
 
-  alias ElixirGistWeb.GistFormComponent
+  alias ElixirGistWeb.{GistFormComponent, Utilities.DateFormat}
   alias ElixirGist.Gists
 
   def mount(%{"id" => id}, _session, socket) do
     gist = Gists.get_gist!(id)
 
-    {:ok, relative_time} =
-      Timex.format(gist.updated_at, "{relative}", :relative)
-
-    gist = Map.put(gist, :relative, relative_time)
+    gist =
+      Map.put(gist, :relative, DateFormat.get_relative_time(gist.updated_at))
 
     {:ok, assign(socket, gist: gist, page_title: "Show gist")}
   end

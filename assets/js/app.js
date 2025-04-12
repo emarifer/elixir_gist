@@ -23,22 +23,49 @@ import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters
+// https://stackoverflow.com/questions/384286/how-do-you-check-if-a-javascript-object-is-a-dom-object
 function updateLineNumbers(value, element_id = "#line-numbers") {
-  const lineNumberText = document.querySelector(element_id);
+  let lineNumberText;
+  const ids = ["#line-numbers", "#syntax-numbers"];
+  if (ids.includes(element_id)) {
+    lineNumberText = document.querySelector(element_id);
+  } else {
+    lineNumberText = element_id;
+  }
   if (!lineNumberText) return;
 
   const lines = value.split("\n");
   const numbers = lines.map((_, index) => index + 1).join("\n") + "\n";
 
-  lineNumberText.value = numbers;
+  if (lineNumberText instanceof Element) {
+    lineNumberText.value = numbers;
+  }
 };
 
 let Hooks = {};
 
+// https://www.javascripttutorial.net/javascript-dom/javascript-siblings/
+// https://uibakery.io/regex-library/uuid
+// https://www.w3schools.com/jsref/jsref_includes_array.asp
 Hooks.Highlight = {
   mounted() {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     let name = this.el.getAttribute("data-name");
     let codeBlock = this.el.querySelector("pre code");
+
+    if (uuidRegex.test(name)) {
+      const language = this.el.getAttribute("data-language");
+      const txtarea = this.el.previousElementSibling;
+
+      if (txtarea && name && codeBlock && language) {
+        codeBlock.className = codeBlock.className.replace(/language-\S+/g, "");
+        codeBlock.classList.add(`language-${this.getSyntaxType(language)}`);
+        trimmed = this.trimCodeBlock(codeBlock);
+        hljs.highlightElement(trimmed);
+        updateLineNumbers(trimmed.textContent, txtarea);
+      }
+      return;
+    }
 
     if (name && codeBlock) {
       codeBlock.className = codeBlock.className.replace(/language-\S+/g, "");
