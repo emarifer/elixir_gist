@@ -24,14 +24,7 @@ import topbar from "../vendor/topbar"
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters
 // https://stackoverflow.com/questions/384286/how-do-you-check-if-a-javascript-object-is-a-dom-object
-function updateLineNumbers(value, element_id = "#line-numbers") {
-  let lineNumberText;
-  const ids = ["#line-numbers", "#syntax-numbers"];
-  if (ids.includes(element_id)) {
-    lineNumberText = document.querySelector(element_id);
-  } else {
-    lineNumberText = element_id;
-  }
+function updateLineNumbers(value, lineNumberText) {
   if (!lineNumberText) return;
 
   const lines = value.split("\n");
@@ -49,30 +42,16 @@ let Hooks = {};
 // https://www.w3schools.com/jsref/jsref_includes_array.asp
 Hooks.Highlight = {
   mounted() {
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    // const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     let name = this.el.getAttribute("data-name");
     let codeBlock = this.el.querySelector("pre code");
-
-    if (uuidRegex.test(name)) {
-      const language = this.el.getAttribute("data-language");
-      const txtarea = this.el.previousElementSibling;
-
-      if (txtarea && name && codeBlock && language) {
-        codeBlock.className = codeBlock.className.replace(/language-\S+/g, "");
-        codeBlock.classList.add(`language-${this.getSyntaxType(language)}`);
-        trimmed = this.trimCodeBlock(codeBlock);
-        hljs.highlightElement(trimmed);
-        updateLineNumbers(trimmed.textContent, txtarea);
-      }
-      return;
-    }
 
     if (name && codeBlock) {
       codeBlock.className = codeBlock.className.replace(/language-\S+/g, "");
       codeBlock.classList.add(`language-${this.getSyntaxType(name)}`);
       trimmed = this.trimCodeBlock(codeBlock);
       hljs.highlightElement(trimmed);
-      updateLineNumbers(trimmed.textContent, "#syntax-numbers");
+      updateLineNumbers(trimmed.textContent, this.el.previousElementSibling);
     }
   },
 
@@ -109,12 +88,13 @@ Hooks.Highlight = {
 
 Hooks.UpdateLineNumbers = {
   mounted() {
-    const lineNumberText = document.querySelector("#line-numbers");
+    // https://stackoverflow.com/questions/61932601/dom-css-selector-how-to-select-a-sibling-of-a-parent-element-if-the-li-has-acti
+    const lineNumberText = this.el.parentElement.parentElement.previousElementSibling;
     const createButton = document.querySelector(".create-button");
     let keyPressed = {};
 
     this.el.addEventListener("input", () => {
-      updateLineNumbers(this.el.value)
+      updateLineNumbers(this.el.value, lineNumberText)
     })
 
     this.el.addEventListener("scroll", () => {
@@ -152,7 +132,7 @@ Hooks.UpdateLineNumbers = {
     })
 
     // We also call the update function when mounting our input.
-    updateLineNumbers(this.el.value)
+    updateLineNumbers(this.el.value, lineNumberText)
   }
 };
 

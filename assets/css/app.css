@@ -49,14 +49,16 @@ form input[type="text"], input[type="email"], input[type="password"]:focus {
 }
 
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-padding-bottom */
+html,
 .scroller {
     scroll-padding-bottom: 32px;
-    scrollbar-gutter: stable;
+    overflow-x: auto;
     scrollbar-color: transparent transparent;
     scrollbar-width: thin;
     transition: scrollbar-color 2s ease-in-out;
 }
 
+html,
 .scroller:hover {
     scrollbar-color: #3C3B3B transparent;
 }

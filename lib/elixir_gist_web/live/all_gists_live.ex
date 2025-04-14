@@ -76,17 +76,15 @@ defmodule ElixirGistWeb.AllGistsLive do
 
       <div class="flex w-full">
         <textarea
-          id={"syntax-numbers-" <> @gist.id}
           class="border border-white font-brand py-2.5 text-xs text-egDark-light bg-egSyntax h-auto w-[54px] text-right overflow-hidden resize-none rounded-bl-md rounded-tl-md border-r-0 focus:outline-none focus:border-white focus:ring-0"
           readonly
         >
     </textarea>
         <div
           id={@gist.id}
-          class="bg-egSyntax text-xs border border-white border-l-0 h-auto w-full rounded-br-md rounded-tr-md overflow-clip"
+          class="bg-egSyntax text-xs border border-white border-l-0 h-auto w-full rounded-br-md rounded-tr-md overflow-x-scroll scroller"
           phx-hook="Highlight"
-          data-name={@gist.id}
-          data-language={@gist.name}
+          data-name={@gist.name}
         >
           <pre><code class="language-elixir">{get_preview_text(@gist)}</code></pre>
         </div>

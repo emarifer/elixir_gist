@@ -80,27 +80,28 @@ defmodule ElixirGistWeb.GistFormComponent do
                 />
               </div>
             </div>
-            <div id="gist-wrapper" class="flex w-full relative" phx-update="ignore">
+            <div id="gist-wrapper" class="w-full" phx-update="ignore">
               <%!-- https://hexdocs.pm/phoenix_live_view/bindings.html#dom-patching --%>
-              <textarea
-                id="line-numbers"
-                class="border border-white border-y-0 border-r-0 rounded-bl-md font-brand font-regular text-xs text-egDark-light bg-egDark-dark h-[250px] w-[54px] text-right overflow-hidden resize-none focus:outline-none focus:border-white focus:ring-0 pb-8"
-                readonly
-              >{"1\n"}</textarea>
-              <div class="flex-grow">
-                <.input
-                  id="gist-textarea"
-                  phx-hook="UpdateLineNumbers"
-                  type="textarea"
-                  field={@form[:markup_text]}
-                  class="bg-egDark-dark font-brand font-regular text-white text-xs border border-white border-y-0 border-l-0 h-[250px] resize-none w-full rounded-t-none rounded-br-md mt-0 focus:outline-none focus:border-white focus:ring-0 flex-grow scroller pb-8"
-                  placeholder="Insert code…"
-                  spellcheck="false"
-                  autocomplete="off"
-                  phx-debounce="blur"
-                />
+              <div class="flex w-full border border-white border-y-0">
+                <textarea
+                  class=" border-0 font-brand font-regular text-xs text-egDark-light bg-egDark-dark h-[250px] w-[54px] text-right overflow-hidden resize-none focus:outline-none focus:border-white focus:ring-0"
+                  readonly
+                >{"1\n"}</textarea>
+                <div class="flex-grow">
+                  <.input
+                    id={@id}
+                    phx-hook="UpdateLineNumbers"
+                    type="textarea"
+                    field={@form[:markup_text]}
+                    class="bg-egDark-dark font-brand font-regular text-white text-xs border-0 h-[250px] resize-none w-full rounded-t-none mt-0 focus:outline-none focus:border-white focus:ring-0 flex-grow text-nowrap overflow-x-scroll scroller"
+                    placeholder="Insert code…"
+                    spellcheck="false"
+                    autocomplete="off"
+                    phx-debounce="blur"
+                  />
+                </div>
               </div>
-              <div class="pl-2 border border-white bg-egDark rounded-b-md w-full absolute bottom-0 font-brand font-regular text-xs text-egDark-light">
+              <div class="pl-2 border border-white bg-egDark rounded-b-md w-full font-brand font-regular text-xs text-egDark-light">
                 Use <span class="font-bold">Control+Shift+F</span>
                 to exit the editing area and move the focus to the
                 <span class="font-bold">Create gist</span>
