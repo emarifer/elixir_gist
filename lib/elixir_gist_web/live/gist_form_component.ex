@@ -84,7 +84,7 @@ defmodule ElixirGistWeb.GistFormComponent do
               <%!-- https://hexdocs.pm/phoenix_live_view/bindings.html#dom-patching --%>
               <div class="flex w-full border border-white border-y-0">
                 <textarea
-                  class=" border-0 font-brand font-regular text-xs text-egDark-light bg-egDark-dark h-[250px] w-[54px] text-right overflow-hidden resize-none focus:outline-none focus:border-white focus:ring-0"
+                  class="border-0 font-brand font-regular text-xs text-egDark-light bg-egDark-dark h-[250px] w-[54px] text-right overflow-hidden resize-none focus:outline-none focus:border-white focus:ring-0"
                   readonly
                 >{"1\n"}</textarea>
                 <div class="flex-grow">

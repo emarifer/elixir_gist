@@ -27,6 +27,16 @@ defmodule ElixirGist.Gists do
     |> Repo.preload([:user])
   end
 
+  # https://github.com/adrianlimcy/phoenix_pagination
+  # https://medium.com/@michaelmunavu83/streamlining-pagination-in-phoenix-live-view-with-scrivener-5ceb6e6fe642
+  # https://hexdocs.pm/scrivener_ecto/readme.html#usage
+  def paginate_gists(params) do
+    Gist
+    |> order_by(desc: :updated_at)
+    |> preload(:user)
+    |> Repo.paginate(params)
+  end
+
   @doc """
   Gets a single gist.
 

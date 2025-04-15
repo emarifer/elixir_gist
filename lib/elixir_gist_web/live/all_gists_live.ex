@@ -4,19 +4,44 @@ defmodule ElixirGistWeb.AllGistsLive do
   alias ElixirGist.Gists
   alias ElixirGistWeb.Utilities.DateFormat
 
-  def mount(_params, _session, socket) do
-    {:ok, socket |> assign(:page_title, "All gists")}
+  # https://github.com/adrianlimcy/phoenix_pagination
+  # https://medium.com/@michaelmunavu83/streamlining-pagination-in-phoenix-live-view-with-scrivener-5ceb6e6fe642
+  # https://hexdocs.pm/scrivener_ecto/readme.html#usage
+  def mount(params, _session, socket) do
+    gists = Gists.paginate_gists(params).entries
+    total_pages = Gists.paginate_gists(params).total_pages
+    page_number = Gists.paginate_gists(params).page_number
+    total_entries = Gists.paginate_gists(params).total_entries
+
+    # {:ok, socket |> assign(:page_title, "All gists")}
+
+    {:ok,
+     socket
+     |> assign(:gists, gists)
+     |> assign(:total_pages, total_pages)
+     |> assign(:page_number, page_number)
+     |> assign(:total_entries, total_entries)
+     |> assign(:page_title, "All gists")}
   end
 
   # https://hexdocs.pm/phoenix_live_view/live-navigation.html#handle_params-3
   # https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#c:handle_params/3
-  def handle_params(_params, _uri, socket) do
+  def handle_params(params, _uri, socket) do
     # See note below
-    gists = Gists.list_gists()
+    # gists = Gists.list_gists()
+    gists = Gists.paginate_gists(params).entries
+    total_pages = Gists.paginate_gists(params).total_pages
+    page_number = Gists.paginate_gists(params).page_number
+    total_entries = Gists.paginate_gists(params).total_entries
 
-    socket = assign(socket, gists: gists)
+    # socket = assign(socket, gists: gists)
 
-    {:noreply, socket}
+    {:noreply,
+     socket
+     |> assign(:gists, gists)
+     |> assign(:total_pages, total_pages)
+     |> assign(:page_number, page_number)
+     |> assign(:total_entries, total_entries)}
   end
 
   # https://til.hashrocket.com/posts/d75339a700-named-captures-with-elixir-regular-expressions
