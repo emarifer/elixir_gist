@@ -37,6 +37,15 @@ defmodule ElixirGist.Gists do
     |> Repo.paginate(params)
   end
 
+  # https://hexdocs.pm/ecto/Ecto.Query.html#where/3
+  def personal_gists(user, params) do
+    Gist
+    |> where([g], g.user_id == ^user.id)
+    |> order_by(desc: :updated_at)
+    |> preload(:user)
+    |> Repo.paginate(params)
+  end
+
   @doc """
   Gets a single gist.
 

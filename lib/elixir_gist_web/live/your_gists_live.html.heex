@@ -1,8 +1,4 @@
-<div class="eg-gradient flex items-center justify-center">
-  <h1 class="font-brand font-bold text-3xl text-white">
-    All Gists
-  </h1>
-</div>
+<.live_component id={:your_gists} module={PersonalGistsHeaderComponent} path={@path} />
 
 <.live_component :for={gist <- @gists} gist={gist} id={gist.id} module={GistPreviewComponent} />
 
@@ -13,14 +9,14 @@
 >
   <.link
     :if={@page_number > 1}
-    navigate={~p"/all?#{%{page: @page_number - 1}}"}
+    navigate={~p"/your_gists?#{%{page: @page_number - 1}}"}
     class="block hover:underline"
   >
     <span class="text-base font-bold text-egLavender-dark">‹‹</span> Previous
   </.link>
 
   <div class="flex gap-1 text-sm text-white">
-    <.link :for={idx <- Enum.to_list(1..@total_pages)} navigate={~p"/all?#{%{page: idx}}"}>
+    <.link :for={idx <- Enum.to_list(1..@total_pages)} navigate={~p"/your_gists?#{%{page: idx}}"}>
       <span class={[
         "px-2",
         @page_number == idx && "bg-egLavender-dark rounded-md border border-white"
@@ -32,16 +28,9 @@
 
   <.link
     :if={@page_number < @total_pages}
-    navigate={~p"/all?#{%{page: @page_number + 1}}"}
+    navigate={~p"/your_gists?#{%{page: @page_number + 1}}"}
     class="block hover:underline"
   >
     Next <span class="text-base font-bold text-egLavender-dark">››</span>
   </.link>
 </nav>
-
-<%!-- REFERENCES: --%>
-<%!-- https://github.com/adrianlimcy/phoenix_pagination
-  https://medium.com/@michaelmunavu83/streamlining-pagination-in-phoenix-live-view-with-scrivener-5ceb6e6fe642
-  https://hexdocs.pm/scrivener_ecto/readme.html#usage
-  https://elixirforum.com/t/conditional-css-class-names/41700/6
---%>

@@ -2,7 +2,7 @@ defmodule ElixirGistWeb.AllGistsLive do
   use ElixirGistWeb, :live_view
 
   alias ElixirGist.Gists
-  alias ElixirGistWeb.{GistPreviewComponent, PageNavigationComponent}
+  alias ElixirGistWeb.GistPreviewComponent
 
   # https://github.com/adrianlimcy/phoenix_pagination
   # https://medium.com/@michaelmunavu83/streamlining-pagination-in-phoenix-live-view-with-scrivener-5ceb6e6fe642

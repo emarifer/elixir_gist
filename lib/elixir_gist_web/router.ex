@@ -69,6 +69,8 @@ defmodule ElixirGistWeb.Router do
       live "/create", CreateGistLive
       live "/gist", GistLive
       live "/all", AllGistsLive
+      live "/your_gists", YourGistsLive
+      live "/saved_gists", SavedGistsLive
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
