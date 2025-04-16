@@ -4,7 +4,7 @@
   </h1>
 </div>
 
-<.gist :for={gist <- @gists} gist={gist} />
+<.live_component :for={gist <- @gists} gist={gist} id={gist.id} module={GistPreviewComponent} />
 
 <%!-- Pages navigation --%>
 <.live_component
