@@ -13,7 +13,7 @@
 
 <br />
   
-![GitHub License](https://img.shields.io/github/license/emarifer/go-echo-templ-htmx)
+![GitHub License](https://img.shields.io/github/license/emarifer/elixir_gist)
 
 </div>
 
