@@ -6,11 +6,18 @@ defmodule ElixirGistWeb.GistLive do
 
   def mount(%{"id" => id}, _session, socket) do
     gist = Gists.get_gist!(id)
+    saved_gist_count = Gists.saved_gist_count(id)
+    is_saved = Gists.user_has_gist_saved?(socket.assigns.current_user.id, id)
 
     gist =
       Map.put(gist, :relative, DateFormat.get_relative_time(gist.updated_at))
 
-    {:ok, assign(socket, gist: gist, page_title: "Show gist")}
+    {:ok,
+     socket
+     |> assign(gist: gist)
+     |> assign(count: saved_gist_count)
+     |> assign(is_saved: is_saved)
+     |> assign(page_title: "Show gist")}
   end
 
   def handle_event("delete", %{"id" => id}, socket) do
@@ -22,6 +29,40 @@ defmodule ElixirGistWeb.GistLive do
       {:error, message, gist} ->
         socket = put_flash(socket, :error, message)
         {:noreply, redirect(socket, to: ~p"/gist?#{[id: gist]}")}
+    end
+  end
+
+  def handle_event("save_gist", %{"user_id" => user_id, "gist_id" => gist_id}, socket) do
+    is_saved = Gists.user_has_gist_saved?(user_id, gist_id)
+
+    if !is_saved do
+      create_saved_gist(socket, user_id, gist_id)
+    else
+      delete_saved_gist(socket, user_id, gist_id)
+    end
+  end
+
+  defp create_saved_gist(socket, user_id, gist_id) do
+    case Gists.create_saved_gist(%{"user_id" => user_id, "gist_id" => gist_id}) do
+      {:ok, _save_gist} ->
+        socket = put_flash(socket, :info, "Gist Successfully Saved")
+        {:noreply, redirect(socket, to: ~p"/gist?id=#{gist_id}")}
+
+      {:error, message} ->
+        socket = put_flash(socket, :error, message)
+        {:noreply, redirect(socket, to: ~p"/gist?id=#{gist_id}")}
+    end
+  end
+
+  defp delete_saved_gist(socket, user_id, gist_id) do
+    case Gists.delete_saved_gist(user_id, gist_id) do
+      {1, _} ->
+        socket = put_flash(socket, :info, "Saved gist successfully deleted!")
+        {:noreply, redirect(socket, to: ~p"/gist?id=#{gist_id}")}
+
+      _ ->
+        socket = put_flash(socket, :error, "Something went wrong while deleting the gist!")
+        {:noreply, redirect(socket, to: ~p"/gist?id=#{gist_id}")}
     end
   end
 end

@@ -1,1 +1,8 @@
 <.live_component id={:saved_gists} module={PersonalGistsHeaderComponent} path={@path} />
+
+<.live_component
+  :for={saved_gist <- @saved_gists}
+  gist={saved_gist.gist}
+  id={saved_gist.gist.id}
+  module={GistPreviewComponent}
+/>

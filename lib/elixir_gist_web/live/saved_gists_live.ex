@@ -1,10 +1,20 @@
 defmodule ElixirGistWeb.SavedGistsLive do
   use ElixirGistWeb, :live_view
 
-  alias ElixirGistWeb.PersonalGistsHeaderComponent
+  alias ElixirGistWeb.{
+    GistPreviewComponent,
+    PersonalGistsHeaderComponent
+  }
+
+  alias ElixirGist.Gists
 
   def mount(_params, _session, socket) do
-    {:ok, socket |> assign(:page_title, "Saved gists")}
+    saved_gists = Gists.list_saved_gists(socket.assigns.current_user)
+
+    {:ok,
+     socket
+     |> assign(:saved_gists, saved_gists)
+     |> assign(:page_title, "Saved gists")}
   end
 
   def handle_params(_params, uri, socket) do

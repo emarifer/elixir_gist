@@ -1,3 +1,7 @@
+<%!-- <div class="translate-y-0">
+  <.flash_group flash={@flash} />
+</div> --%>
+
 <div class="eg-gradient flex flex-col items-center justify-center p-4">
   <div class="flex justify-between w-full mb-10 px-4">
     <div class="flex items-center ml-10">
@@ -24,11 +28,22 @@
       </div>
     </div>
     <div class="flex items-center mr-10">
-      <button class="flex items-center bg-egPurple hover:bg-egPurple-dark border-white border-[1px] text-white h-8 font-bold py-2 px-2 rounded-l-md">
-        <img src="/images/BookmarkOutline.svg" alt="Save Button" /> Save
+      <button
+        type="button"
+        phx-click="save_gist"
+        phx-value-user_id={@current_user.id}
+        phx-value-gist_id={@gist.id}
+        class="flex items-center bg-egPurple hover:bg-egPurple-dark border-white border-[1px] text-white h-8 font-bold py-2 px-2 rounded-l-md"
+      >
+        <span :if={@is_saved} title="It's saved!" class="flex items-center gap-1">
+          <img src="/images/BookmarkFilled.svg" alt="Save Button 'is_saved'" /> Do not save
+        </span>
+        <span :if={!@is_saved} title="It is not saved!" class="flex items-center gap-1">
+          <img src="/images/BookmarkOutline.svg" alt="Save Button 'it is not saved'" /> Save
+        </span>
       </button>
       <div class="flex items-center bg-transparent text-white font-brand h-8 rounded-r-md border-white border-[1px] px-3">
-        0
+        {@count}
       </div>
     </div>
   </div>

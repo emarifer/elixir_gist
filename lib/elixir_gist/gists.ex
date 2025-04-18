@@ -8,6 +8,7 @@ defmodule ElixirGist.Gists do
   alias ElixirGist.Repo
 
   alias ElixirGist.Gists.Gist
+  alias ElixirGist.Gists.SavedGist
 
   # https://elixirforum.com/t/how-to-preload-associations-in-ecto-and-then-access-fields-from-those-associations/13316/2
   # https://hexdocs.pm/ecto/Ecto.Query.html#order_by/3
@@ -147,8 +148,6 @@ defmodule ElixirGist.Gists do
     Gist.changeset(gist, attrs)
   end
 
-  alias ElixirGist.Gists.SavedGist
-
   @doc """
   Returns the list of saved_gists.
 
@@ -158,8 +157,43 @@ defmodule ElixirGist.Gists do
       [%SavedGist{}, ...]
 
   """
-  def list_saved_gists do
-    Repo.all(SavedGist)
+  def list_saved_gists(user) do
+    # https://elixirforum.com/t/ecto-query-order-for-preload/16714
+    # https://tech.appunite.com/blog/ecto-query-preload-vs-ecto-repo-preload?redirected=true
+
+    # Repo.all(
+    #   from s in SavedGist,
+    #     preload: [{:gist, :user}, :user]
+    # )
+
+    SavedGist
+    |> where([sg], sg.user_id == ^user.id)
+    |> Repo.all()
+    |> Repo.preload([:user, gist: :user])
+    |> Enum.sort(&(&1.gist.updated_at > &2.gist.updated_at))
+
+    # ↑↑↑↑↑ # See references for this below # ↑↑↑↑↑ #
+    # https://github.com/elixir-ecto/ecto/issues/2550#issuecomment-389666260
+  end
+
+  #  ↑↑↑↑↑  https://github.com/elixir-ecto/ecto/issues/2550
+  # https://github.com/elixir-ecto/ecto/issues/2550#issuecomment-389666260
+  # https://stackoverflow.com/questions/51758710/how-can-i-sort-list-of-map-by-map-value-in-elixir
+
+  # https://elixirforum.com/t/repo-aggregate-queryable-count-id-vs-select-count-element-id/46449
+  # https://stackoverflow.com/questions/36683238/count-the-number-of-entries-in-an-ecto-repository
+  # ↓↓↓↓↓ # See references for this above # ↓↓↓↓↓ #
+
+  def saved_gist_count(gist_id) do
+    SavedGist
+    |> where([sg], sg.gist_id == ^gist_id)
+    |> Repo.aggregate(:count)
+  end
+
+  def user_has_gist_saved?(user_id, gist_id) do
+    SavedGist
+    |> where([sg], sg.gist_id == ^gist_id and sg.user_id == ^user_id)
+    |> Repo.aggregate(:count) >= 1
   end
 
   @doc """
@@ -190,9 +224,8 @@ defmodule ElixirGist.Gists do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_saved_gist(user, attrs \\ %{}) do
-    user
-    |> Ecto.build_assoc(:saved_gists)
+  def create_saved_gist(attrs \\ %{}) do
+    %SavedGist{}
     |> SavedGist.changeset(attrs)
     |> Repo.insert()
   end
@@ -227,8 +260,14 @@ defmodule ElixirGist.Gists do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_saved_gist(%SavedGist{} = saved_gist) do
-    Repo.delete(saved_gist)
+
+  # def delete_saved_gist(user_id, gist_id) do
+  #   Repo.delete(saved_gist)
+  # end
+  # https://elixirforum.com/t/ecto-delete-a-record-without-selecting-first/20024/2
+  def delete_saved_gist(user_id, gist_id) do
+    from(sg in SavedGist, where: sg.gist_id == ^gist_id and sg.user_id == ^user_id)
+    |> Repo.delete_all()
   end
 
   @doc """
