@@ -4,6 +4,7 @@ defmodule ElixirGist.Gists do
   """
 
   import Ecto.Query, warn: false
+
   alias ElixirGist.Accounts.User
   alias ElixirGist.Repo
 
@@ -32,19 +33,29 @@ defmodule ElixirGist.Gists do
   # https://medium.com/@michaelmunavu83/streamlining-pagination-in-phoenix-live-view-with-scrivener-5ceb6e6fe642
   # https://hexdocs.pm/scrivener_ecto/readme.html#usage
   def paginate_gists(params) do
-    Gist
-    |> order_by(desc: :updated_at)
-    |> preload(:user)
-    |> Repo.paginate(params)
+    result =
+      Gist
+      |> order_by(desc: :updated_at)
+      |> preload(:user)
+      |> Repo.paginate(params)
+
+    %Scrivener.Page{entries: gists} = result
+
+    %{result | entries: gists |> Enum.map(&Gist.populate_count/1)}
   end
 
   # https://hexdocs.pm/ecto/Ecto.Query.html#where/3
   def personal_gists(user, params) do
-    Gist
-    |> where([g], g.user_id == ^user.id)
-    |> order_by(desc: :updated_at)
-    |> preload(:user)
-    |> Repo.paginate(params)
+    result =
+      Gist
+      |> where([g], g.user_id == ^user.id)
+      |> order_by(desc: :updated_at)
+      |> preload(:user)
+      |> Repo.paginate(params)
+
+    %Scrivener.Page{entries: gists} = result
+
+    %{result | entries: gists |> Enum.map(&Gist.populate_count/1)}
   end
 
   @doc """
@@ -160,17 +171,19 @@ defmodule ElixirGist.Gists do
   def list_saved_gists(user) do
     # https://elixirforum.com/t/ecto-query-order-for-preload/16714
     # https://tech.appunite.com/blog/ecto-query-preload-vs-ecto-repo-preload?redirected=true
+    # https://medium.com/rekkiapp/how-to-use-data-spanning-multiple-data-sources-in-elixir-50f39c87d8fc
 
-    # Repo.all(
-    #   from s in SavedGist,
-    #     preload: [{:gist, :user}, :user]
-    # )
+    result =
+      SavedGist
+      |> where([sg], sg.user_id == ^user.id)
+      |> Repo.all()
+      |> Repo.preload([:user, gist: :user])
+      |> Enum.sort(&(&1.gist.updated_at > &2.gist.updated_at))
 
-    SavedGist
-    |> where([sg], sg.user_id == ^user.id)
-    |> Repo.all()
-    |> Repo.preload([:user, gist: :user])
-    |> Enum.sort(&(&1.gist.updated_at > &2.gist.updated_at))
+    for sg <- result do
+      %SavedGist{gist: gist} = sg
+      %{sg | gist: gist |> Gist.populate_count()}
+    end
 
     # ↑↑↑↑↑ # See references for this below # ↑↑↑↑↑ #
     # https://github.com/elixir-ecto/ecto/issues/2550#issuecomment-389666260

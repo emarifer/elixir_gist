@@ -40,7 +40,7 @@ defmodule ElixirGistWeb.GistPreviewComponent do
           </div>
           <div class="flex items-center">
             <img src="/images/BookmarkOutline.svg" alt="Bookmark Count" class="w-5 h-5" />
-            <span class="text-white text-sm px-1">0</span>
+            <span class="text-white text-sm px-1">{@gist.saved_count}</span>
           </div>
         </div>
       </div>

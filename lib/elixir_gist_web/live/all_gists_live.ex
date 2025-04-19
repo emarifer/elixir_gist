@@ -13,8 +13,6 @@ defmodule ElixirGistWeb.AllGistsLive do
     page_number = Gists.paginate_gists(params).page_number
     total_entries = Gists.paginate_gists(params).total_entries
 
-    # {:ok, socket |> assign(:page_title, "All gists")}
-
     {:ok,
      socket
      |> assign(:gists, gists)
@@ -33,8 +31,6 @@ defmodule ElixirGistWeb.AllGistsLive do
     total_pages = Gists.paginate_gists(params).total_pages
     page_number = Gists.paginate_gists(params).page_number
     total_entries = Gists.paginate_gists(params).total_entries
-
-    # socket = assign(socket, gists: gists)
 
     {:noreply,
      socket
