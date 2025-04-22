@@ -1,24 +1,17 @@
 <header class="flex justify-between items-center px-6 py-3 bg-egDark">
-  <div class="flex relative">
+  <div class="flex relative items-center">
     <a href={~p"/"}>
       <img src="/images/gist-logo.svg" alt="Logo" class="h-8 w-auto" />
     </a>
     <a href={~p"/"} class="mr-6">
       <p class="text-white font-brand font-bold text-3xl">Gist</p>
     </a>
-    <div>
-      <input
-        type="text"
-        class="rounded-lg focus:outline-none focus:border-egLavender focus:ring-0 px-3 py-1 bg-egDark-dark placeholder-egDark-light text-white font-brand font-regular text-sm mr-5 border-white"
-        placeholder="Search…"
-      />
-      <.link
-        navigate={~p"/all"}
-        class="mt-2 mr-2 text-white text-[1rem] font-brand font-bold hover:text-egDark-light"
-      >
-        All gists
-      </.link>
-    </div>
+    <.link
+      navigate={~p"/all"}
+      class="block ml-3 text-white text-[1rem] font-brand font-bold hover:text-egDark-light"
+    >
+      All gists
+    </.link>
   </div>
   <div class="relative">
     <button

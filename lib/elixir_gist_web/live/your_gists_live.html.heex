@@ -9,14 +9,14 @@
 >
   <.link
     :if={@page_number > 1}
-    navigate={~p"/your_gists?#{%{page: @page_number - 1}}"}
+    patch={~p"/your_gists?#{%{page: @page_number - 1}}"}
     class="block hover:underline"
   >
     <span class="text-base font-bold text-egLavender-dark">‹‹</span> Previous
   </.link>
 
   <div class="flex gap-1 text-sm text-white">
-    <.link :for={idx <- Enum.to_list(1..@total_pages)} navigate={~p"/your_gists?#{%{page: idx}}"}>
+    <.link :for={idx <- Enum.to_list(1..@total_pages)} patch={~p"/your_gists?#{%{page: idx}}"}>
       <span class={[
         "px-2",
         @page_number == idx && "bg-egLavender-dark rounded-md border border-white"
@@ -28,7 +28,7 @@
 
   <.link
     :if={@page_number < @total_pages}
-    navigate={~p"/your_gists?#{%{page: @page_number + 1}}"}
+    patch={~p"/your_gists?#{%{page: @page_number + 1}}"}
     class="block hover:underline"
   >
     Next <span class="text-base font-bold text-egLavender-dark">››</span>

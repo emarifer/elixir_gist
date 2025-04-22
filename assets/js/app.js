@@ -177,6 +177,17 @@ Hooks.DateFormat = {
   }
 }
 
+// https://hexdocs.pm/phoenix_live_view/js-interop.html#client-server-communication
+// https://salesforce.stackexchange.com/questions/366317/how-to-catch-the-event-of-clicking-the-clear-button-in-lightning-input-type-s
+// https://elixirforum.com/t/sending-events-from-js-to-liveview-component/49800/4
+Hooks.ClearSearchInput = {
+  mounted() {
+    this.el.addEventListener("search", () => {
+      if (this.el.value == "") this.pushEvent("reset-search", {})
+    })
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,

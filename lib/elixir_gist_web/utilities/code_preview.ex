@@ -6,7 +6,13 @@ defmodule ElixirGistWeb.Utilities.CodePreview do
     if length(lines) > 10 do
       regex = ~r/(?<bs>^\s+)/
       [line1 | _] = lines
-      %{"bs" => bs} = Regex.named_captures(regex, line1)
+
+      # We ensure that if there is no match `bs` defaults to an empty string.
+      bs =
+        case Regex.named_captures(regex, line1) do
+          %{"bs" => bs} -> bs
+          nil -> ""
+        end
 
       (Enum.take(lines, 9) ++ [bs <> "..."]) |> Enum.join("\n")
     else

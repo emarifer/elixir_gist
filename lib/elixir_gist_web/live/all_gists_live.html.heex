@@ -1,47 +1,74 @@
-<div class="eg-gradient flex items-center justify-center">
+<div class="eg-gradient flex flex-col gap-4 items-center justify-center">
   <h1 class="font-brand font-bold text-3xl text-white">
     All Gists
   </h1>
+  <%!-- See footnote 01 --%>
+  <.simple_form phx-submit="search" for={@form} class="bg-transparent flex items-center gap-4">
+    <div class="flex items-center">
+      <.input
+        id="search_form"
+        type="search"
+        field={@form[:search]}
+        class="rounded-l-lg rounded-r-none border-white px-3 py-1.5 bg-egDark-dark placeholder-egDark-light text-white font-brand font-regular text-xs flex-1 h-full"
+        placeholder="Search…"
+        phx-hook="ClearSearchInput"
+      />
+      <div class="bg-egDark-dark border border-l-0 border-white rounded-r-lg rounded-l-none flex-1 h-full px-1">
+        <.icon class="bg-egDark-light" name="hero-magnifying-glass" />
+      </div>
+    </div>
+  </.simple_form>
 </div>
 
-<.live_component :for={gist <- @gists} gist={gist} id={gist.id} module={GistPreviewComponent} />
+<div :if={@gists}>
+  <.live_component :for={gist <- @gists} gist={gist} id={gist.id} module={GistPreviewComponent} />
 
-<%!-- Pages navigation --%>
-<nav
-  :if={@total_pages >= 2}
-  class="flex gap-4 items-center p-0.5 text-sm text-white w-fit mx-auto"
->
-  <.link
-    :if={@page_number > 1}
-    navigate={~p"/all?#{%{page: @page_number - 1}}"}
-    class="block hover:underline"
+  <%!-- Pages navigation --%>
+  <nav
+    :if={@total_pages >= 2}
+    class="flex gap-4 items-center p-0.5 text-sm text-white w-fit mx-auto"
   >
-    <span class="text-base font-bold text-egLavender-dark">‹‹</span> Previous
-  </.link>
-
-  <div class="flex gap-1 text-sm text-white">
-    <.link :for={idx <- Enum.to_list(1..@total_pages)} navigate={~p"/all?#{%{page: idx}}"}>
-      <span class={[
-        "px-2",
-        @page_number == idx && "bg-egLavender-dark rounded-md border border-white"
-      ]}>
-        {idx}
-      </span>
+    <.link
+      :if={@page_number > 1}
+      patch={~p"/all?#{%{page: @page_number - 1, search: @search}}"}
+      class="block hover:underline"
+    >
+      <span class="text-base font-bold text-egLavender-dark">‹‹</span> Previous
     </.link>
-  </div>
 
-  <.link
-    :if={@page_number < @total_pages}
-    navigate={~p"/all?#{%{page: @page_number + 1}}"}
-    class="block hover:underline"
-  >
-    Next <span class="text-base font-bold text-egLavender-dark">››</span>
-  </.link>
-</nav>
+    <div class="flex gap-1 text-sm text-white">
+      <.link
+        :for={idx <- Enum.to_list(1..@total_pages)}
+        patch={~p"/all?#{%{page: idx, search: @search}}"}
+      >
+        <span class={[
+          "px-2",
+          @page_number == idx && "bg-egLavender-dark rounded-md border border-white"
+        ]}>
+          {idx}
+        </span>
+      </.link>
+    </div>
+
+    <.link
+      :if={@page_number < @total_pages}
+      patch={~p"/all?#{%{page: @page_number + 1, search: @search}}"}
+      class="block hover:underline"
+    >
+      Next <span class="text-base font-bold text-egLavender-dark">››</span>
+    </.link>
+  </nav>
+</div>
+
+<%!-- NOTE01 --%>
+<%!-- https://elixirforum.com/t/submitting-forms-in-liveview-without-performing-page-reload/31942/2 --%>
 
 <%!-- REFERENCES: --%>
 <%!-- https://github.com/adrianlimcy/phoenix_pagination
   https://medium.com/@michaelmunavu83/streamlining-pagination-in-phoenix-live-view-with-scrivener-5ceb6e6fe642
   https://hexdocs.pm/scrivener_ecto/readme.html#usage
   https://elixirforum.com/t/conditional-css-class-names/41700/6
+  https://elixirforum.com/t/sending-events-from-js-to-liveview-component/49800/4
+  https://salesforce.stackexchange.com/questions/366317/how-to-catch-the-event-of-clicking-the-clear-button-in-lightning-input-type-s
+  https://www.geeksforgeeks.org/how-to-create-columns-with-the-same-height-in-tailwind-css/
 --%>

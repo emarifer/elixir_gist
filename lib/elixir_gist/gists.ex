@@ -34,10 +34,23 @@ defmodule ElixirGist.Gists do
   # https://hexdocs.pm/scrivener_ecto/readme.html#usage
   def paginate_gists(params) do
     result =
-      Gist
-      |> order_by(desc: :updated_at)
-      |> preload(:user)
-      |> Repo.paginate(params)
+      case params do
+        %{"search" => search_term} ->
+          Gist
+          |> where(
+            [g],
+            ilike(g.description, ^"%#{search_term}%") or ilike(g.name, ^"%#{search_term}%")
+          )
+          |> order_by(desc: :updated_at)
+          |> preload(:user)
+          |> Repo.paginate(params)
+
+        _ ->
+          Gist
+          |> order_by(desc: :updated_at)
+          |> preload(:user)
+          |> Repo.paginate(params)
+      end
 
     %Scrivener.Page{entries: gists} = result
 

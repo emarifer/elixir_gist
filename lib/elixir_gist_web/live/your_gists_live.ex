@@ -10,10 +10,13 @@ defmodule ElixirGistWeb.YourGistsLive do
 
   def mount(params, _session, socket) do
     user = socket.assigns.current_user
-    gists = Gists.personal_gists(user, params).entries
-    total_pages = Gists.personal_gists(user, params).total_pages
-    page_number = Gists.personal_gists(user, params).page_number
-    total_entries = Gists.personal_gists(user, params).total_entries
+
+    %Scrivener.Page{
+      entries: gists,
+      total_pages: total_pages,
+      page_number: page_number,
+      total_entries: total_entries
+    } = Gists.personal_gists(user, params)
 
     {:ok,
      socket
@@ -28,10 +31,13 @@ defmodule ElixirGistWeb.YourGistsLive do
     %{path: path} = URI.parse(uri)
 
     user = socket.assigns.current_user
-    gists = Gists.personal_gists(user, params).entries
-    total_pages = Gists.personal_gists(user, params).total_pages
-    page_number = Gists.personal_gists(user, params).page_number
-    total_entries = Gists.personal_gists(user, params).total_entries
+
+    %Scrivener.Page{
+      entries: gists,
+      total_pages: total_pages,
+      page_number: page_number,
+      total_entries: total_entries
+    } = Gists.personal_gists(user, params)
 
     {:noreply,
      socket
