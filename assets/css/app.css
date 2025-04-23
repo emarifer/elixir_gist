@@ -63,6 +63,21 @@ form input[type="search"]::-webkit-search-cancel-button {
     cursor: pointer;
 }
 
+
+input[type="radio"]:checked~label {
+    @apply bg-egPurple border border-b-egDark-light z-20 text-white font-semibold
+}
+
+input[type="radio"]:checked~label~div {
+    @apply z-10
+}
+
+/* https://stackoverflow.com/questions/61039259/disable-tailwind-on-a-div-or-component#78513190 */
+#text-preview,
+#text-preview * {
+    all: revert !important;
+}
+
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-padding-bottom */
 html,
 .scroller {

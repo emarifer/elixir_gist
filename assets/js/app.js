@@ -15,6 +15,7 @@
 //     import "some-package"
 //
 import hljs from "highlight.js"
+import markdownit from "markdown-it"
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html"
 // Establish Phoenix Socket and LiveView configuration.
@@ -185,6 +186,20 @@ Hooks.ClearSearchInput = {
     this.el.addEventListener("search", () => {
       if (this.el.value == "") this.pushEvent("reset-search", {})
     })
+  }
+}
+
+Hooks.HandleMarkdown = {
+  mounted() {
+    const md = markdownit('commonmark');
+    const preview = document.getElementById("text-preview");
+    this.el.addEventListener("input", () => {
+      if (this.el.value.length == 0) {
+        preview.innerHTML = "Nothing to preview"
+      } else {
+        preview.innerHTML = md.render(this.el.value);
+      }
+    });
   }
 }
 

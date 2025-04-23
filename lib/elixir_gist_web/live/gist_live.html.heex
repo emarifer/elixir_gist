@@ -119,4 +119,85 @@
   </div>
 </div>
 
+<hr class="block mx-28 mb-4 mt-1.5 lg:mx-52 border-t-[1px] border-egDark-light" />
+
+<div class="flex gap-5 items-start mx-28 mb-10 mt-[6px] lg:mx-52">
+  <img src="/images/user-image.svg" alt="Profile Image" class="round-image-padding w-8 h-8" />
+
+  <div class="flex-grow">
+    <div class="relative h-40 clear-both justify-center border border-egDark-light rounded-t-lg overflow-clip w-full">
+      <div class="float-left mt-[3px]">
+        <input class="hidden" type="radio" id="tab-1" name="tab-group-1" checked />
+        <label
+          class="bg-egDark-dark p-2 border border-egDark-light border-b-0 border-l-0 -ml-[1px] relative left-[1px] rounded-t-lg text-sm font-brand text-egDark-light cursor-pointer"
+          for="tab-1"
+        >
+          Write
+        </label>
+
+        <div class="absolute top-8 left-0 right-0 bottom-0 bg-egDark-dark border-t-[1px] border-t-egDark-light">
+        </div>
+
+        <div class="absolute top-10 left-0 right-0 bottom-0 py-2">
+          <textarea
+            id="text-markdown"
+            class="w-full h-full bg-egDark-dark text-egDark-light text-sm border-none resize-none focus:outline-none focus:ring-0 scroller"
+            placeholder="Leave a comment"
+            phx-hook="HandleMarkdown"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="float-left mt-[3px]">
+        <input class="hidden" type="radio" id="tab-2" name="tab-group-1" />
+        <label
+          class="bg-egDark-dark p-2 border border-egDark-light border-b-0 border-l-0 -ml-[1px] relative left-[1px] rounded-t-lg text-sm font-brand text-egDark-light cursor-pointer"
+          for="tab-2"
+        >
+          Preview
+        </label>
+
+        <div class="absolute top-8 left-0 right-0 bottom-0 bg-egDark-dark border-t-[1px] border-t-egDark-light">
+        </div>
+
+        <div class="absolute top-10 left-0 right-0 bottom-0 p-4 overflow-scroll scroller bg-egDark-dark text-egDark-light text-sm">
+          <div id="text-preview">Nothing to preview</div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-egDark w-full text-white text-xs font-brand border border-t-0 border-egDark-light rounded-b-lg py-1 px-2">
+      <a
+        href="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div class="flex gap-2 bg-egDark hover:bg-egDark-light hover:bg-opacity-30 w-fit py-0.5 px-2 rounded">
+          <img src="/images/markdown-svgrepo-com.svg" alt="Markdown Icon" class="w-4 h-4" />
+          Markdown is supported
+        </div>
+      </a>
+    </div>
+    <div class="mt-2 w-full flex justify-end">
+      <button
+        class=" bg-egPurple hover:bg-egPurple-dark border-white border text-white text-sm py-1 px-3 rounded-md"
+        type="button"
+      >
+        Comment
+      </button>
+    </div>
+  </div>
+</div>
+
 <%!-- https://youtu.be/tPIlvh0dOlw?si=Ern9MlkRdxOpzXB_&t=1631 --%>
+<%!-- https://css-tricks.com/functional-css-tabs-revisited/
+  https://techbrij.com/css-selector-adjacent-child-sibling
+  https://indiecourses.com/blog/how-to-build-a-github-style-markdown-editor 
+  https://petros.blog/2025/02/03/changelog-markdown-phoenix-liveview/
+  https://www.npmjs.com/package/markdown-it#simple
+  https://wpshout.com/snippets/accessible-pure-css-tabs/#gref
+  https://codepen.io/MPDoctor/pen/mpJdYe
+  https://www.npmjs.com/package/markdown-it
+  https://markdown-it.github.io/
+  https://webapps.stackexchange.com/questions/14986/strikethrough-with-github-markdown
+  https://stackoverflow.com/questions/61039259/disable-tailwind-on-a-div-or-component#78513190
+--%>
