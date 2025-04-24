@@ -73,9 +73,42 @@ input[type="radio"]:checked~label~div {
 }
 
 /* https://stackoverflow.com/questions/61039259/disable-tailwind-on-a-div-or-component#78513190 */
-#text-preview,
-#text-preview * {
+.reset-tw,
+.reset-tw * {
     all: revert !important;
+}
+
+/* https://css-tricks.com/speech-bubble-arrows-that-inherit-parent-color/ */
+/* https://projects.verou.me/bubbly/ */
+/* https://alvaromontoro.com/blog/67970/drawing-a-triangle-with-css */
+/* https://stackoverflow.com/questions/29001636/adding-border-to-css-triangle */
+.speech-bubble:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 35%;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-right-color: #3C3B3B;
+    border-left: 0;
+    border-bottom-color: transparent;
+    margin-top: -4px;
+    margin-left: -8px;
+}
+
+.speech-bubble-border:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 0;
+    border: 9px solid transparent;
+    border-right-color: #828282;
+    border-left: 0;
+    border-bottom-color: transparent;
+    margin-top: 9px;
+    margin-left: -9px;
 }
 
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-padding-bottom */

@@ -119,6 +119,17 @@
   </div>
 </div>
 
+<div :if={length(@gist.comments) != 0}>
+  <.live_component
+    :for={comment <- @gist.comments |> Enum.sort(&(&1.updated_at > &2.updated_at))}
+    comment={comment}
+    id={comment.id}
+    user_id={@current_user.id}
+    gist_id={@gist.id}
+    module={CommentComponent}
+  />
+</div>
+
 <hr class="block mx-28 mb-4 mt-1.5 lg:mx-52 border-t-[1px] border-egDark-light" />
 
 <div class="flex gap-5 items-start mx-28 mb-10 mt-[6px] lg:mx-52">
@@ -161,7 +172,9 @@
         </div>
 
         <div class="absolute top-10 left-0 right-0 bottom-0 p-4 overflow-scroll scroller bg-egDark-dark text-egDark-light text-sm">
-          <div id="text-preview">Nothing to preview</div>
+          <div class="reset-tw" id="text-preview">
+            Nothing to preview
+          </div>
         </div>
       </div>
     </div>
@@ -179,8 +192,12 @@
     </div>
     <div class="mt-2 w-full flex justify-end">
       <button
+        id="create-comment"
         class=" bg-egPurple hover:bg-egPurple-dark border-white border text-white text-sm py-1 px-3 rounded-md"
         type="button"
+        data-userid={@current_user.id}
+        data-gistid={@gist.id}
+        phx-hook="CreateComment"
       >
         Comment
       </button>

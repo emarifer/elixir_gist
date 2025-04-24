@@ -49,9 +49,8 @@ defmodule ElixirGist.Comments do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_comment(user, attrs \\ %{}) do
-    user
-    |> Ecto.build_assoc(:comments)
+  def create_comment(attrs \\ %{}) do
+    %Comment{}
     |> Comment.changeset(attrs)
     |> Repo.insert()
   end
@@ -86,8 +85,16 @@ defmodule ElixirGist.Comments do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_comment(%Comment{} = comment) do
-    Repo.delete(comment)
+  def delete_comment(user_id, comment_id) do
+    comment = Repo.get!(Comment, comment_id)
+
+    if user_id == comment.user_id do
+      Repo.delete(comment)
+
+      {:ok, comment}
+    else
+      {:error, :unauthorized}
+    end
   end
 
   @doc """

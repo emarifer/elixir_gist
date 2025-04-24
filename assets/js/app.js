@@ -193,6 +193,7 @@ Hooks.HandleMarkdown = {
   mounted() {
     const md = markdownit('commonmark');
     const preview = document.getElementById("text-preview");
+
     this.el.addEventListener("input", () => {
       if (this.el.value.length == 0) {
         preview.innerHTML = "Nothing to preview"
@@ -200,6 +201,37 @@ Hooks.HandleMarkdown = {
         preview.innerHTML = md.render(this.el.value);
       }
     });
+  }
+}
+
+Hooks.FormatMarkdown = {
+  mounted() {
+    const md = markdownit('commonmark');
+
+    this.el.innerHTML = md.render(this.el.textContent.trim());
+  }
+}
+
+// https://elixirforum.com/t/get-value-from-different-element-without-form/40924
+Hooks.CreateComment = {
+  mounted() {
+    const userId = this.el.getAttribute("data-userid");
+    const gistId = this.el.getAttribute("data-gistid");
+    const textMarkdown = document.getElementById("text-markdown");
+
+    this.el.addEventListener("click", () => {
+      if (textMarkdown && !textMarkdown.value) {
+        alert("There was a problem saving your comment. Your comment can't be blank. Please try again.");
+        return;
+      }
+      if (userId && gistId && textMarkdown) {
+        this.pushEvent("create_comment", {
+          markup_text: textMarkdown.value,
+          user_id: userId,
+          gist_id: gistId
+        });
+      }
+    })
   }
 }
 

@@ -88,8 +88,10 @@ defmodule ElixirGist.Gists do
   def get_gist!(id) do
     Gist
     |> Repo.get!(id)
-    |> Repo.preload([:user])
+    |> Repo.preload([:user, [comments: :user]])
   end
+
+  # ↑↑↑↑↑ https://elixirforum.com/t/ecto-query-preloading-nested-associations/51582/2
 
   @doc """
   Creates a gist.

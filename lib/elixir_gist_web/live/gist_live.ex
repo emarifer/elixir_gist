@@ -1,8 +1,8 @@
 defmodule ElixirGistWeb.GistLive do
   use ElixirGistWeb, :live_view
 
-  alias ElixirGistWeb.{GistFormComponent, Utilities.DateFormat}
-  alias ElixirGist.Gists
+  alias ElixirGistWeb.{CommentComponent, GistFormComponent, Utilities.DateFormat}
+  alias ElixirGist.{Comments, Gists}
 
   def mount(%{"id" => id}, _session, socket) do
     gist = Gists.get_gist!(id)
@@ -42,15 +42,39 @@ defmodule ElixirGistWeb.GistLive do
     end
   end
 
-  defp create_saved_gist(socket, user_id, gist_id) do
-    case Gists.create_saved_gist(%{"user_id" => user_id, "gist_id" => gist_id}) do
-      {:ok, _save_gist} ->
-        socket = put_flash(socket, :info, "Gist Successfully Saved")
+  def handle_event("create_comment", %{"gist_id" => gist_id} = params, socket) do
+    case Comments.create_comment(params) do
+      {:ok, _save_comment} ->
+        socket = put_flash(socket, :info, "Comment Created Successfully")
         {:noreply, redirect(socket, to: ~p"/gist?id=#{gist_id}")}
 
       {:error, message} ->
         socket = put_flash(socket, :error, message)
         {:noreply, redirect(socket, to: ~p"/gist?id=#{gist_id}")}
+    end
+  end
+
+  def handle_event("delete_comment", %{"comment_id" => comment_id, "gist_id" => gist_id}, socket) do
+    case Comments.delete_comment(socket.assigns.current_user.id, comment_id) do
+      {:ok, _comment} ->
+        socket = put_flash(socket, :info, "Comment Successfully Deleted")
+        {:noreply, push_navigate(socket, to: ~p"/gist?id=#{gist_id}")}
+
+      {:error, message} ->
+        socket = put_flash(socket, :error, message)
+        {:noreply, push_navigate(socket, to: ~p"/gist?id=#{gist_id}")}
+    end
+  end
+
+  defp create_saved_gist(socket, user_id, gist_id) do
+    case Gists.create_saved_gist(%{"user_id" => user_id, "gist_id" => gist_id}) do
+      {:ok, _save_gist} ->
+        socket = put_flash(socket, :info, "Gist Successfully Saved")
+        {:noreply, push_navigate(socket, to: ~p"/gist?id=#{gist_id}")}
+
+      {:error, message} ->
+        socket = put_flash(socket, :error, message)
+        {:noreply, push_navigate(socket, to: ~p"/gist?id=#{gist_id}")}
     end
   end
 
