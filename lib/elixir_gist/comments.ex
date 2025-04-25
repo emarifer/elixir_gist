@@ -56,6 +56,25 @@ defmodule ElixirGist.Comments do
   end
 
   @doc """
+  Returns the number of comments for a given gist_id
+  or nil if the gist does not exist.
+
+  ## Examples
+
+      iex> comment_count(gist_id)
+      integer()
+
+      iex> comment_count(gist_bad_id)
+      nil
+
+  """
+  def comment_count(gist_id) do
+    Comment
+    |> where([c], c.gist_id == ^gist_id)
+    |> Repo.aggregate(:count)
+  end
+
+  @doc """
   Updates a comment.
 
   ## Examples

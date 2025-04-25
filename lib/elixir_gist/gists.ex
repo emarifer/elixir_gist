@@ -26,7 +26,7 @@ defmodule ElixirGist.Gists do
     Gist
     |> order_by(desc: :updated_at)
     |> Repo.all()
-    |> Repo.preload([:user])
+    |> Repo.preload([:user, :comments])
   end
 
   # https://github.com/adrianlimcy/phoenix_pagination
@@ -42,13 +42,13 @@ defmodule ElixirGist.Gists do
             ilike(g.description, ^"%#{search_term}%") or ilike(g.name, ^"%#{search_term}%")
           )
           |> order_by(desc: :updated_at)
-          |> preload(:user)
+          |> preload([:user, :comments])
           |> Repo.paginate(params)
 
         _ ->
           Gist
           |> order_by(desc: :updated_at)
-          |> preload(:user)
+          |> preload([:user, :comments])
           |> Repo.paginate(params)
       end
 
@@ -63,7 +63,7 @@ defmodule ElixirGist.Gists do
       Gist
       |> where([g], g.user_id == ^user.id)
       |> order_by(desc: :updated_at)
-      |> preload(:user)
+      |> preload([:user, :comments])
       |> Repo.paginate(params)
 
     %Scrivener.Page{entries: gists} = result
@@ -192,7 +192,7 @@ defmodule ElixirGist.Gists do
       SavedGist
       |> where([sg], sg.user_id == ^user.id)
       |> Repo.all()
-      |> Repo.preload([:user, gist: :user])
+      |> Repo.preload([:user, [gist: :user, gist: :comments]])
       |> Enum.sort(&(&1.gist.updated_at > &2.gist.updated_at))
 
     for sg <- result do

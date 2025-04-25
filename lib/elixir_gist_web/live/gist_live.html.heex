@@ -72,6 +72,7 @@
             title="Delete gist"
             class="px-1 hover:brightness-75 active:scale-110"
             type="button"
+            data-confirm="Are you sure you want to delete this gist?"
             phx-click="delete"
             phx-value-id={@gist.id}
           >
@@ -154,6 +155,7 @@
             id="text-markdown"
             class="w-full h-full bg-egDark-dark text-egDark-light text-sm border-none resize-none focus:outline-none focus:ring-0 scroller"
             placeholder="Leave a comment"
+            spellcheck="false"
             phx-hook="HandleMarkdown"
           ></textarea>
         </div>

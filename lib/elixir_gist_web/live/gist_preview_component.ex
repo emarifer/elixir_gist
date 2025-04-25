@@ -36,7 +36,9 @@ defmodule ElixirGistWeb.GistPreviewComponent do
         <div class="flex items-start gap-3">
           <div class="flex items-center">
             <img src="/images/comment.svg" alt="Comment Count" class="w-5 h-5" />
-            <span class="text-white text-sm px-1">0</span>
+            <span class="text-white text-sm px-1">
+              {length(@gist.comments)}
+            </span>
           </div>
           <div class="flex items-center">
             <img src="/images/BookmarkOutline.svg" alt="Bookmark Count" class="w-5 h-5" />

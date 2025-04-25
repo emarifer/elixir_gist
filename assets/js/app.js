@@ -165,6 +165,23 @@ Hooks.CopyToClipboard = {
   }
 };
 
+Hooks.CopyCommentLink = {
+  mounted() {
+    this.el.addEventListener("click", (e) => {
+      // Remove the hash if there is one to get a clean URL
+      // with only the query parameters
+      result = location.href.replace(/#.*/g, "");
+      const textToCopy = `${result}#${this.el.getAttribute("data-comment-link")}`;
+
+      if (textToCopy) {
+        navigator.clipboard.writeText(textToCopy)
+          .then(() => console.log("Gist copied to clipboard"))
+          .catch((err) => console.error("Failed to copy text:", err));
+      }
+    })
+  }
+};
+
 Hooks.CurrentYear = {
   mounted() {
     this.el.textContent = new Date().getFullYear();
