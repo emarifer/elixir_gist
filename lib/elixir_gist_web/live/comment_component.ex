@@ -20,7 +20,7 @@ defmodule ElixirGistWeb.CommentComponent do
             </span>
           </div>
           <%!-- https://elixirforum.com/t/easy-confirm-action-in-phoenix-for-click-submit-etc/64847/11 --%>
-          <div class="flex gap-2">
+          <div class="flex gap-2 items-center">
             <button
               :if={@user_id == @comment.user_id}
               title="Delete comment"
@@ -42,7 +42,7 @@ defmodule ElixirGistWeb.CommentComponent do
               phx-hook="CopyCommentLink"
               data-comment-link={"comment_id=#{@comment.id}"}
             >
-              <img src="/images/copy.svg" alt="Copy Button" />
+              <.icon class="bg-white w-4 h-4" name="hero-link" />
             </button>
           </div>
         </div>

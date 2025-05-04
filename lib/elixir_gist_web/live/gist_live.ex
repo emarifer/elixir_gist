@@ -1,7 +1,7 @@
 defmodule ElixirGistWeb.GistLive do
   use ElixirGistWeb, :live_view
 
-  alias ElixirGistWeb.{CommentComponent, GistFormComponent, Utilities.DateFormat}
+  alias ElixirGistWeb.{CommentComponent, GistFormComponent, Utilities.DateFormat, Exceptions}
   alias ElixirGist.{Comments, Gists}
 
   def mount(%{"id" => id}, _session, socket) do
@@ -19,6 +19,8 @@ defmodule ElixirGistWeb.GistLive do
      |> assign(is_saved: is_saved)
      |> assign(page_title: "Show gist")}
   end
+
+  def mount(_params, _session, _socket), do: raise(Exceptions.NotFoundError)
 
   def handle_event("delete", %{"id" => id}, socket) do
     case Gists.delete_gist(socket.assigns.current_user, id) do

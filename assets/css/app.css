@@ -111,6 +111,20 @@ input[type="radio"]:checked~label~div {
     margin-left: -9px;
 }
 
+.not-found-speech-bubble:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 30%;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-left-color: #BC9AFF;
+    border-right: 0;
+    margin-top: -10px;
+    margin-right: -10px;
+}
+
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-padding-bottom */
 html,
 .scroller {

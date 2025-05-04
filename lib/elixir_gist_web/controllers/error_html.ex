@@ -13,12 +13,33 @@ defmodule ElixirGistWeb.ErrorHTML do
   #   * lib/elixir_gist_web/controllers/error_html/404.html.heex
   #   * lib/elixir_gist_web/controllers/error_html/500.html.heex
   #
-  # embed_templates "error_html/*"
+  embed_templates "error_html/*"
 
   # The default is to render a plain text page based on
   # the template name. For example, "404.html" becomes
   # "Not Found".
-  def render(template, _assigns) do
-    Phoenix.Controller.status_message_from_template(template)
+  def render(_template, assigns) do
+    status = assigns.status
+    # message = Phoenix.Controller.status_message_from_template(template)
+
+    resp =
+      case status do
+        404 ->
+          %{
+            message: "This is not the web page you are looking for.",
+            page_title: "Page Not Found"
+          }
+
+        400 ->
+          %{message: "Bad Request.", page_title: "Bad Request"}
+
+        _ ->
+          %{message: "Internal Server Error.", page_title: "Internal Server Error"}
+      end
+
+    fallback(%{status: status, message: resp[:message], page_title: resp[:page_title]})
   end
 end
+
+# REFERENCES:
+# https://elixirforum.com/t/is-it-possible-to-define-a-fallback-template-for-errorhtml-in-phoenix-1-7/54182/2

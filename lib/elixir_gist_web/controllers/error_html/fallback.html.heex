@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="google" content="notranslate" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title default="Home" suffix=" · Elixir Gist">
+      {assigns[:page_title]}
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+  </head>
+  <body class="bg-egDark-dark antialiased">
+    <header
+      :if={@status in [400, 404]}
+      class="flex justify-between items-center px-6 py-3 bg-egDark"
+    >
+      <div class="flex relative items-center">
+        <a href={~p"/"}>
+          <img src="/images/gist-logo.svg" alt="Logo" class="h-8 w-auto" />
+        </a>
+        <a href={~p"/"} class="mr-6">
+          <p class="text-white font-brand font-bold text-3xl">Gist</p>
+        </a>
+        <.link
+          navigate={~p"/all"}
+          class="block ml-3 text-white text-[1rem] font-brand font-bold hover:text-egDark-light"
+        >
+          All gists
+        </.link>
+      </div>
+    </header>
+
+    <main
+      class="transition-all duration-[1000ms] opacity-0 -translate-x-16"
+      phx-mounted={JS.remove_class("opacity-0 -translate-x-16")}
+    >
+      <div class="eg-gradient flex gap-6 items-end justify-center" style="height: 250px;">
+        <div class="flex flex-col gap-1">
+          <h1 class="font-brand font-extrabold text-8xl text-egLavender-light text-center">
+            {@status}
+          </h1>
+          <div class="relative rounded-lg bg-egLavender-light text-slate-600 font-bold text-2xl p-4 w-52 not-found-speech-bubble">
+            {@message}
+          </div>
+        </div>
+        <img
+          src="/images/octocat-jedi.png"
+          alt="Octocat Jedi Logo"
+          class={[
+            "w-20",
+            case @status do
+              404 -> "mb-12"
+              400 -> "mb-0"
+              _ -> "mb-6"
+            end
+          ]}
+        />
+      </div>
+    </main>
+
+    <footer class="w-full flex justify-center text-white px-16 py-10 font-brand font-regular text-xs lg:px-40 mt-28">
+      <div class="w-full px-10">
+        <div class="border-t-[1px] border-white w-full"></div>
+        <div class="flex items-center space-x-2 py-6">
+          <img src="/images/emarifer-logo.jpg" alt="Author Logo" class="round-image-padding w-14" />
+          <p>© <span id="current-year" phx-hook="CurrentYear"></span> emarifer</p>
+          <div class="text-egLavender-dark px-4 space-x-2">
+            <a href={~p"/"} class="hover:underline">Terms</a>
+            <a href={~p"/"} class="hover:underline">Privacy</a>
+            <a
+              href="https://github.com/emarifer"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:underline"
+            >
+              About
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<%!-- class={["w-20", if(@status == 404, do: "mb-12", else: "mb-6")]} --%>
