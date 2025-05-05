@@ -94,6 +94,9 @@ end
 # https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.JS.html#toggle_class/3
 # https://hexdocs.pm/phoenix_live_view/js-interop.html
 #
+# https://elixirforum.com/t/toggle-classes-with-phoenix-liveview-js/45608
+# https://elixirforum.com/t/how-to-use-js-add-class-and-js-remove-class-to-change-div-color-on-phx-click/60730
+#
 # https://www.javascripttutorial.net/javascript-dom/javascript-toggle-password-visibility/
 # https://www.geeksforgeeks.org/show-hide-password-using-javascript/
 # https://www.w3schools.com/howto/howto_js_toggle_password.asp
