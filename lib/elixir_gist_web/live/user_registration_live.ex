@@ -37,7 +37,32 @@ defmodule ElixirGistWeb.UserRegistrationLive do
         </.error>
 
         <.input field={@form[:email]} type="email" placeholder="Email" required />
-        <.input field={@form[:password]} type="password" placeholder="Password" required />
+        <div class="relative mt-2">
+          <.input
+            id="password"
+            field={@form[:password]}
+            type="password"
+            class="block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 pr-10"
+            placeholder="Password"
+            required
+          />
+          <div
+            id="show-hide-pass"
+            phx-click={
+              JS.toggle_class("hero-eye",
+                to: {:inner, "span"},
+                transition: {"ease-out duration-75", "hero-eye", "hero-eye-slash"}
+              )
+            }
+            phx-hook="ShowPassword"
+            title="Show password"
+          >
+            <.icon
+              name="hero-eye"
+              class="bg-egDark-light mt-1.5 w-5 h-5 absolute inset-y-0 end-0 z-20 px-4 cursor-pointer"
+            />
+          </div>
+        </div>
 
         <div class="py-6">
           <.button phx-disable-with="Creating account…" class="create-button w-full">

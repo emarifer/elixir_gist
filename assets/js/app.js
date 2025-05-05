@@ -252,6 +252,19 @@ Hooks.CreateComment = {
   }
 }
 
+Hooks.ShowPassword = {
+  mounted() {
+    const password = document.getElementById("password");
+
+    this.el.addEventListener("click", () => {
+      const type = password.getAttribute("type") === "password" ? "text" : "password";
+      const title = this.el.getAttribute("title") === "Show password" ? "Hide password" : "Show password";
+      password.setAttribute("type", type);
+      this.el.setAttribute("title", title);
+    })
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
