@@ -165,6 +165,21 @@ Hooks.CopyToClipboard = {
   }
 };
 
+Hooks.ShareGist = {
+  mounted() {
+    this.el.addEventListener("click", (e) => {
+      const gistId = this.el.getAttribute("data-share-gist");
+      // console.log(`${location.origin}/gist?id=${gistId}`);
+
+      if (gistId) {
+        navigator.clipboard.writeText(`${location.origin}/gist?id=${gistId}`)
+          .then(() => console.log("Gist link copied to clipboard"))
+          .catch((err) => console.error("Failed to copy link:", err));
+      }
+    })
+  }
+};
+
 Hooks.CopyCommentLink = {
   mounted() {
     this.el.addEventListener("click", (e) => {

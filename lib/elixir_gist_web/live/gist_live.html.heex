@@ -66,7 +66,7 @@
       <div class="w-[300px] pl-2 font-brand font-bold text-base text-egLavender-dark">
         {@gist.name}
       </div>
-      <div>
+      <div class="flex items-center">
         <%= if @current_user.id == @gist.user_id do %>
           <button
             title="Delete gist"
@@ -97,6 +97,16 @@
           data-clipboard-gist={@gist.markup_text}
         >
           <img src="/images/copy.svg" alt="Copy Button" />
+        </button>
+        <button
+          id="share-btn"
+          title="Share gist link"
+          class="px-1 mb-1 hover:brightness-75 active:scale-110"
+          type="button"
+          phx-hook="ShareGist"
+          data-share-gist={@gist.id}
+        >
+          <.icon class="bg-white w-4 h-4" name="hero-share" />
         </button>
       </div>
     </div>
