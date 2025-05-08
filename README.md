@@ -7,13 +7,9 @@
 
 <img src="docs/app-logo.png" width="20%">
 
-<br />
+<br /><br />
   
 ![GitHub License](https://img.shields.io/github/license/emarifer/elixir_gist) ![Static Badge](https://img.shields.io/badge/Elixir-%3E=1.18-6e4a7e) ![Static Badge](https://img.shields.io/badge/Erlang/OTP-%3E=27-B83998) ![Static Badge](https://img.shields.io/badge/PhoenixFramework-%3E=1.7.21-fd4f00)
-
-
-> 🚧 This is a page under construction and therefore does not yet show all
-> the information related to the application.
 
 </div>
 
@@ -21,7 +17,7 @@
 
 ### Features 🚀
 
-- [x] **General features:** : This is a [`GitHub Gist`](https://gist.github.com/discover) clone with reduced features, i.e., a **minimum viable product** (MVP). From there, any dev could plan and implement new features that would expand their capabilities. In any case, with `Elixir Gist` we can create a user account (the entire authentication system is automatically implemented by Phoenix upon project creation, thanks to the fantastic set of tools provided by both `Elixir` and the `Phoenix framework` itself, with, in most cases, little modification required to adapt it to our particular use case), and account confirmation via email; the authentication system will ensure the protection of views that require a logged-in user. Once inside the application, we can create code snippets whose syntax will be highlighted by the [`highlight.js`](https://highlightjs.org/) library (this library promises syntax highlighting for 192 languages ​​with 498 themes). These snippets can be copied/shared by any user, and their creator can edit/delete them. We can search all snippets stored in the database by name or description. This view displays pagination, sorting Gists in descending order by update date and time, and displays a summary preview of the snippet. We'll also have a view that shows only the snippets the current user has created or those they've saved as favorites. Finally, in the view that shows the full snippet, in addition to allowing the user who created it to edit/delete it, we can also save it as a favorite (or remove it from that list) and add comments, which are saved using `Markdown` syntax, making the result more elegant than just plain text.
+- [x] **General features:** : This is a [`GitHub Gist`](https://gist.github.com/discover) clone with reduced features, i.e., a **minimum viable product** (MVP). From there, any dev could plan and implement new features that would expand their capabilities. In any case, with `Elixir Gist` we can create a user account (the entire authentication system is automatically implemented by Phoenix upon project creation, thanks to the fantastic set of tools provided by both `Elixir` and the `Phoenix framework` itself, generally requiring only a few modifications to adapt it to our use case), and account confirmation via email; the authentication system will ensure the protection of views that require a logged-in user. Once inside the application, we can create code snippets whose syntax will be highlighted by the [`highlight.js`](https://highlightjs.org/) library (this library promises syntax highlighting for 192 languages ​​with 498 themes). These snippets can be copied/shared by any user, and their creator can edit/delete them. We can search all snippets stored in the database by name or description. This view displays pagination, sorting Gists in descending order by update date and time, and displays a summary preview of the snippet. We'll also have a view that shows only the snippets the current user has created or those they've saved as favorites. Finally, in the view that shows the full snippet, in addition to allowing the user who created it to edit/delete it, we can also save it as a favorite (or remove it from that list) and add comments, which are saved using `Markdown` syntax (using another JavaScript library, [`markdown-it`](https://github.com/markdown-it/markdown-it)), making the result more elegant than just plain text.
 
 <div align="center">
 
@@ -56,9 +52,64 @@
 
 ### 👨‍🚀 Getting Started:
 
-To start your Phoenix server:
+#### <ins>1. To test/modify the application (development mode):</ins>
 
-  * Run `mix setup` to install and setup dependencies
+Whether you're testing or modifying your application's code, you'll obviously need Elixir and Phoenix installed (in that order). Installing Elixir installs the entire ecosystem of language tools (e.g., `Mix`, `IEx` and `ExUnit`), `Erlang`, and the `Erlang virtual machine` (`BEAM`). To do this, carefully read the [instructions](https://elixir-lang.org/install.html) for your operating system.
+
+If you are interested in programming with `Elixir&Erlang/OTP` and want to debugging complex systems, jumping at the code is not enough. It is necessary to have an understanding of the whole virtual machine, processes, applications, as well as set up tracing mechanisms. Luckily this can be achieved in Erlang with [`Observer`](https://hexdocs.pm/elixir/1.18.3/debugging.html#observer) (`:observer`). In your application:
+
+```
+$ iex
+iex> :observer.start()
+```
+
+The problem is that this call may fail due to missing dependencies in your OS because you've installed a minimized version of Erlang (particularly common in some `Linux` distributions). The missing dependencies are specifically the `Erlang/OTP bindings to wxWidgets`. So, to avoid this problem, make sure to install `erlang-wx` (or `erlang-nox`, as appropriate) **<ins>before</ins>** installing Erlang.
+
+To [install](https://hexdocs.pm/phoenix/installation.html) the Phoenix framework, once you have Elixir with its Mix tool, you will simply need one command:
+
+```
+$ mix archive.install hex phx_new
+```
+
+This is equivalent to installing an Elixir dependency of a project but globally on the system. From this moment on, with the Mix tool we can access the Phoenix project generator with the command:
+
+```
+$ mix phx.new hello
+```
+
+Now we will need a relational database server. Phoenix recommends using `PostgreSQL` and configures it by default, but we can switch to `MySQL`, `MSSQL`, or `SQLite3` by passing the `--database` flag when creating a new application. Since we're using PostgreSQL in this application, we'll need to have it started on our system. If you don't want to install it directly, you can start it from a `Docker` container (obviously, you'll also need to have Docker installed on your system). At the root of the project, you have a `docker-compose.yml` file to create the container by simply running the following:
+
+```
+$ docker compose up -d
+
+# docker container stop bs_db_local, to stop it
+# docker container start bs_db_local, to start it again
+```
+
+If you don't have the PostgreSQL image, it will download it, create the container, and start it in the background. Additionally, a Docker volume will be created in a folder above the project folder, where all the data from our DB will be stored. You can interact directly with the database using any management/visualization application you have installed on your system for this purpose. If not, you can always manage the database running in the container using commands:
+
+```
+$ docker exec -it bs_db_local psql -U backend_stuff
+
+# (pass: blork_erlang)
+# \c elixir_gist_dev, to connect to the `elixir_gist_dev` database running on the container.
+```
+
+>[!NOTE]
+>***Aside from the SQL language you'll need to manage/verify what the application creates, you can review more commands [here](https://hasura.io/blog/top-psql-commands-and-flags-you-need-to-know-postgresql).***
+
+Finally, since the application uses JavaScript libraries for syntax highlighting and markdown rendering on the front-end, when you start the project setup, an error will occur if `Node.js` is not installed on the system, as the `npm` command will be run to perform the installation. This will also allow us to install other JavaScript libraries if we need them in the future.
+
+
+>[!NOTE]
+>***Phoenix provides a very handy feature called Live Reloading. As you change your views or your assets, it automatically reloads the page in the browser. In order for this functionality to work, you need a filesystem watcher. macOS and Windows users already have a filesystem watcher, but Linux users must install inotify-tools. Please consult the inotify-tools wiki for distribution-specific installation instructions.***
+
+
+Now we are ready to begin…
+
+#### <ins>2. To start your Phoenix server and application:</ins>
+
+  * Run `mix setup` to install and configure dependencies, perform database migrations, and bundle assets (`.js`, `.css` files, and images)
   * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
@@ -68,7 +119,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 ### Learn more
 
   * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
+  * Guides: https://hexdocs.pm/phoenix/overview.html & https://hexdocs.pm/elixir/introduction.html
   * Docs: https://hexdocs.pm/phoenix
   * Forum: https://elixirforum.com/c/phoenix-forum
   * Source: https://github.com/phoenixframework/phoenix

@@ -72,7 +72,7 @@ defmodule ElixirGist.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
+      setup: [&add_js_deps/1, "deps.get", "ecto.setup", "assets.setup", "assets.build"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
@@ -84,5 +84,10 @@ defmodule ElixirGist.MixProject do
         "phx.digest"
       ]
     ]
+  end
+
+  # Add js dependencies automatically (highlight.js & markdown-it).
+  defp add_js_deps(_) do
+    System.cmd("npm", ["install"], cd: "assets")
   end
 end
