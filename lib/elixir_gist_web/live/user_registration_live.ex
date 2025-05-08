@@ -39,7 +39,6 @@ defmodule ElixirGistWeb.UserRegistrationLive do
         <.input field={@form[:email]} type="email" placeholder="Email" required />
         <div class="relative mt-2">
           <.input
-            id="password"
             field={@form[:password]}
             type="password"
             class="block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 pr-10"
@@ -47,9 +46,11 @@ defmodule ElixirGistWeb.UserRegistrationLive do
             required
           />
           <div
-            id="show-hide-pass"
-            phx-click={JS.toggle_class("hero-eye-slash", to: {:inner, "span"})}
-            phx-hook="ShowPassword"
+            phx-click={
+              JS.toggle_class("hero-eye-slash", to: {:inner, "span"})
+              |> JS.toggle_attribute({"type", "text", "password"}, to: ":has(+ div) input")
+              |> JS.toggle_attribute({"title", "Show password", "Hide password"})
+            }
             title="Show password"
           >
             <.icon

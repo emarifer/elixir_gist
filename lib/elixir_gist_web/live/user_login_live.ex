@@ -31,7 +31,6 @@ defmodule ElixirGistWeb.UserLoginLive do
         <.input field={@form[:email]} type="email" placeholder="Email" required />
         <div class="relative mt-2">
           <.input
-            id="password"
             field={@form[:password]}
             type="password"
             class="block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 pr-10"
@@ -39,9 +38,11 @@ defmodule ElixirGistWeb.UserLoginLive do
             required
           />
           <div
-            id="show-hide-pass"
-            phx-click={JS.toggle_class("hero-eye-slash", to: {:inner, "span"})}
-            phx-hook="ShowPassword"
+            phx-click={
+              JS.toggle_class("hero-eye-slash", to: {:inner, "span"})
+              |> JS.toggle_attribute({"type", "text", "password"}, to: ":has(+ div) input")
+              |> JS.toggle_attribute({"title", "Show password", "Hide password"})
+            }
             title="Show password"
           >
             <.icon
@@ -75,15 +76,6 @@ defmodule ElixirGistWeb.UserLoginLive do
   end
 end
 
-# <div phx-click={JS.toggle_attribute({"type", "text", "password"}, to: "#password")}>
-#   <div phx-click={JS.toggle_class("hero-eye", to: {:inner, "span"})}>
-#     <.icon
-#     class="block bg-egDark-light w-5 h-5 absolute inset-y-0 end-0 z-20 px-4 my-auto cursor-pointer"
-#     name="hero-eye-slash"
-#     />
-#   </div>
-# </div>
-
 # REFERENCES:
 # https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.JS.html
 # https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.JS.html#toggle_class/3
@@ -95,3 +87,7 @@ end
 # https://www.javascripttutorial.net/javascript-dom/javascript-toggle-password-visibility/
 # https://www.geeksforgeeks.org/show-hide-password-using-javascript/
 # https://www.w3schools.com/howto/howto_js_toggle_password.asp
+#
+# Selecting Previous Siblings:
+# https://frontendmasters.com/blog/selecting-previous-siblings/
+# Note: the core component `.input` is actually inside a div, i.e. `<div><input /></div>` (see file `lib/elixir_gist_web/components/core_components.ex`, line 375), that's why the selector for the previous sibling element is `:has(+ div) input`
