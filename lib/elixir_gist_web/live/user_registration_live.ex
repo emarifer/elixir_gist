@@ -48,12 +48,7 @@ defmodule ElixirGistWeb.UserRegistrationLive do
           />
           <div
             id="show-hide-pass"
-            phx-click={
-              JS.toggle_class("hero-eye",
-                to: {:inner, "span"},
-                transition: {"ease-out duration-75", "hero-eye", "hero-eye-slash"}
-              )
-            }
+            phx-click={JS.toggle_class("hero-eye-slash", to: {:inner, "span"})}
             phx-hook="ShowPassword"
             title="Show password"
           >

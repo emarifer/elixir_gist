@@ -158,7 +158,7 @@ Hooks.CopyToClipboard = {
 
       if (textToCopy) {
         navigator.clipboard.writeText(textToCopy)
-          .then(() => console.log("Gist copied to clipboard"))
+          .then(() => alert("Gist copied to clipboard"))
           .catch((err) => console.error("Failed to copy text:", err));
       }
     })
@@ -169,11 +169,10 @@ Hooks.ShareGist = {
   mounted() {
     this.el.addEventListener("click", (e) => {
       const gistId = this.el.getAttribute("data-share-gist");
-      // console.log(`${location.origin}/gist?id=${gistId}`);
 
       if (gistId) {
         navigator.clipboard.writeText(`${location.origin}/gist?id=${gistId}`)
-          .then(() => console.log("Gist link copied to clipboard"))
+          .then(() => alert("Gist link copied to clipboard"))
           .catch((err) => console.error("Failed to copy link:", err));
       }
     })
@@ -190,7 +189,7 @@ Hooks.CopyCommentLink = {
 
       if (textToCopy) {
         navigator.clipboard.writeText(textToCopy)
-          .then(() => console.log("Gist copied to clipboard"))
+          .then(() => alert("Comment link copied to clipboard"))
           .catch((err) => console.error("Failed to copy text:", err));
       }
     })
