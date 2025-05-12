@@ -29,7 +29,21 @@ config :elixir_gist, ElixirGistWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :elixir_gist, ElixirGist.Mailer, adapter: Swoosh.Adapters.Local
+# config :elixir_gist, ElixirGist.Mailer,
+#   adapter: Swoosh.Adapters.Sendgrid,
+#   api_key: System.get_env("SENDGRID_API_KEY")
+
+if config_env() == :prod or config_env() == :dev do
+  config :elixir_gist, ElixirGist.Mailer,
+    adapter: Swoosh.Adapters.Sendgrid,
+    api_key: System.get_env("SENDGRID_API_KEY")
+
+  config :swoosh,
+    api_client: Swoosh.ApiClient.Finch,
+    finch_name: ElixirGist.Finch
+
+  config :elixir_gist, :your_email_env, System.get_env("YOUR_EMAIL_ENV")
+end
 
 # Configure esbuild (the version is required)
 config :esbuild,
@@ -64,3 +78,9 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+# REFERENCES:
+# https://hexdocs.pm/swoosh/Swoosh.html
+# https://www.literatelabs.com/p/how-to-get-verification-emails-for
+# https://elixirforum.com/t/error-when-sending-the-confirmation-email/54139/3
+# https://hexdocs.pm/swoosh/Swoosh.ApiClient.Finch.html

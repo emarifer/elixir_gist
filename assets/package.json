@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "deploy": "cd .. && mix assets.deploy && rm -f _build/esbuild*"
+  },
   "dependencies": {
     "highlight.js": "^11.11.1",
     "markdown-it": "^14.1.0"

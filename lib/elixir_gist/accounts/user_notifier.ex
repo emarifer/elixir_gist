@@ -8,7 +8,7 @@ defmodule ElixirGist.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"ElixirGist", "contact@example.com"})
+      |> from({"ElixirGist", Application.fetch_env!(:elixir_gist, :your_email_env)})
       |> subject(subject)
       |> text_body(body)
 
@@ -77,3 +77,9 @@ defmodule ElixirGist.Accounts.UserNotifier do
     """)
   end
 end
+
+# REFERENCES:
+# https://hexdocs.pm/swoosh/Swoosh.html
+# https://www.literatelabs.com/p/how-to-get-verification-emails-for
+# https://elixirforum.com/t/error-when-sending-the-confirmation-email/54139/3
+# https://hexdocs.pm/swoosh/Swoosh.ApiClient.Finch.html

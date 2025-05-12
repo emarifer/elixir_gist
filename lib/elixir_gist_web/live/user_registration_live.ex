@@ -48,7 +48,7 @@ defmodule ElixirGistWeb.UserRegistrationLive do
           <div
             phx-click={
               JS.toggle_class("hero-eye-slash", to: {:inner, "span"})
-              |> JS.toggle_attribute({"type", "text", "password"}, to: ":has(+ div) input")
+              |> JS.toggle_attribute({"type", "text", "password"}, to: ":has(+ div) div input")
               |> JS.toggle_attribute({"title", "Show password", "Hide password"})
             }
             title="Show password"

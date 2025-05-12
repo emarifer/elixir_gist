@@ -20,6 +20,18 @@ if System.get_env("PHX_SERVER") do
   config :elixir_gist, ElixirGistWeb.Endpoint, server: true
 end
 
+# if config_env() == :prod or config_env() == :dev do
+#   config :elixir_gist, ElixirGist.Mailer,
+#     adapter: Swoosh.Adapters.Sendgrid,
+#     api_key: System.get_env("SENDGRID_API_KEY")
+
+#   config :swoosh,
+#     api_client: Swoosh.ApiClient.Finch,
+#     finch_name: ElixirGist.Finch
+
+#   config :elixir_gist, :your_email_env, System.get_env("YOUR_EMAIL_ENV")
+# end
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
@@ -31,7 +43,8 @@ if config_env() == :prod do
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
   config :elixir_gist, ElixirGist.Repo,
-    # ssl: true,
+    ssl: true,
+    ssl_opts: [verify: :verify_none],
     url: database_url,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
     socket_options: maybe_ipv6
@@ -115,3 +128,10 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end
+
+# REFERENCES:
+# https://hexdocs.pm/swoosh/Swoosh.html
+# https://www.literatelabs.com/p/how-to-get-verification-emails-for
+# https://elixirforum.com/t/error-when-sending-the-confirmation-email/54139/3
+# https://hexdocs.pm/swoosh/Swoosh.ApiClient.Finch.html
+# https://dev.to/manhvanvu/elixir-configuration-environment-variables-4j1f

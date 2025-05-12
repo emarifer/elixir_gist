@@ -82,4 +82,14 @@ config :phoenix_live_view,
   enable_expensive_runtime_checks: true
 
 # Disable swoosh api client as it is only required for production adapters.
-config :swoosh, :api_client, false
+# config :swoosh, :api_client, false
+
+# config :swoosh,
+#   api_client: Swoosh.ApiClient.Finch,
+#   finch_name: ElixirGist.Finch
+
+# REFERENCES:
+# https://hexdocs.pm/swoosh/Swoosh.html
+# https://www.literatelabs.com/p/how-to-get-verification-emails-for
+# https://elixirforum.com/t/error-when-sending-the-confirmation-email/54139/3
+# https://hexdocs.pm/swoosh/Swoosh.ApiClient.Finch.html

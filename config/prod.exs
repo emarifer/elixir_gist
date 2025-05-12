@@ -6,7 +6,18 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :elixir_gist, ElixirGistWeb.Endpoint,
+  url: [host: host, scheme: "https", port: 443],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  check_origin: [host],
   cache_static_manifest: "priv/static/cache_manifest.json"
+
+# ↑↑↑ `host` is the URL of your application ↑↑↑
+
+config :elixir_gist, ElixirGist.Mailer,
+  adapter: Swoosh.Adapters.Sendgrid,
+  api_key: System.get_env("SENDGRID_API_KEY")
+
+config :elixir_gist, :your_email_env, System.get_env("YOUR_EMAIL_ENV")
 
 # Configures Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: ElixirGist.Finch
